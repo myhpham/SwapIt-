@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_google_signin_btn_text_dark_default"
+    android:orientation="vertical">
+
+
+    <ImageView
+        android:id="@+id/userprofileicon_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        app:srcCompat="@drawable/ic_addpost_circle_black_24dp" />
+
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/profilepicprogressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="1000dp"
+        android:layout_marginBottom="15dp" />
+
+    <View
+        android:id="@+id/userprofile_divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/userprofileicon_image"
+        android:background="#281a41"
+        android:visibility="visible" />
+
+
+
+    <EditText
+        android:id="@+id/postItem_title"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="120dp"
+        android:background="#11000000"
+        android:ems="10"
+        android:hint="@string/postitem_title"
+        android:inputType="textPersonName"
+        android:textColor="@color/primaryDark"
+        android:textColorHint="#6F5C72" />
+
+    <EditText
+        android:id="@+id/postItem_description"
+        android:layout_width="300dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="170dp"
+        android:background="#11000000"
+        android:ems="10"
+        android:hint="@string/positem_description"
+        android:inputType="textImeMultiLine"
+        android:textColor="@color/primaryDark"
+        android:textColorHint="#6F5C72" />
+
+
+    <ImageView
+        android:id="@+id/postItem_image"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="290dp"
+        android:onClick="selectImage" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/postItem_image"
+        android:layout_marginHorizontal="160dp"
+        android:layout_marginTop="0dp"
+        android:backgroundTint="#E2DEDE"
+        android:text="@string/postitem_postbutton"
+        android:textColor="#4E4C4C" />
+
+
+</RelativeLayout>

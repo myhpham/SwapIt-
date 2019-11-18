@@ -1,0 +1,59 @@
+package com.zybooks.swapit;
+
+import android.os.Bundle;
+import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.zybooks.swapit.ui.home.HomeFragment;
+
+public class BottomNavBarActivity extends AppCompatActivity {
+
+    private BottomNavigationView bottomNavView;
+    //Fragment active;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_bottom_nav_bar);
+
+        bottomNavView = findViewById(R.id.nav_view);
+        bottomNavView.setOnNavigationItemSelectedListener(navListener);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ViewUserProfileFragment()).commit();
+            //active = new ViewUserProfileFragment();
+        }
+    }
+
+    private BottomNavigationView.OnNavigationItemSelectedListener navListener =
+            new BottomNavigationView.OnNavigationItemSelectedListener() {
+                @Override
+                public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                    Fragment selectedFragment = null;
+
+                    switch (item.getItemId()) {
+                        case R.id.navigation_profile:
+                            selectedFragment = new ViewUserProfileFragment();
+                            break;
+                        case R.id.navigation_home:
+                            selectedFragment = new HomeFragment();
+                            break;
+                        case R.id.navigation_addpost:
+                            selectedFragment = new PostItemFragment();
+                            break;
+                        case R.id.navigation_messages:
+                            selectedFragment = new ViewMessagesFragment();
+                            break;
+                    }
+
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
+                            selectedFragment).commit();
+
+                    return true;
+                }
+            };
+}

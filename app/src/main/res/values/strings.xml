@@ -1,0 +1,32 @@
+<resources>
+    <string name="app_name">SwapIt</string>
+    <string name="main_usernamehint">Username</string>
+    <string name="main_passwordhint">Password</string>
+    <string name="main_signupbutton">or SIGN UP!</string>
+    <string name="main_loginbutton">Login</string>
+    <string name="signup_startSwappingTextView">START SWAPPING!</string>
+    <string name="signup_nameEditText">Full Name</string>
+    <string name="signup_emailEditText">Email Address (username)</string>
+    <string name="signup_passwordEditText">Password</string>
+    <string name="signup_zipcodeEditText">Zip code</string>
+    <string name="signup_signupButton">SIGN UP</string>
+    <string name="userprofile_name">Full Name</string>
+    <string name="userprofile_textView">YOUR PROFILE</string>
+    <string name="userprofile_yourPosts">YOUR POSTS</string>
+    <string name="sellerprofile_textView">SELLER\'S PROFILE</string>
+    <string name="sellerprofile_name">Seller\'s Name</string>
+    <string name="sellerprofile_sellerposts">Posts</string>
+    <string name="sellerprofile_messagebutton">Message Seller</string>
+    <string name="postitem_title">Title</string>
+    <string name="positem_description">Description</string>
+    <string name="postitem_postbutton">POST</string>
+    <string name="viewitem_title">Title</string>
+    <string name="viewitem_sellerbutton">View Seller\'s Profile</string>
+    <string name="viewitem_description">Description</string>
+    <string name="homepage_itemsnearyou">ITEMS NEAR YOU</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_home">Home</string>
+    <string name="title_post">Post</string>
+    <string name="title_profile">Profile</string>
+    <string name="title_messages">Messages</string>
+</resources>

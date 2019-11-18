@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/viewItem_title"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="@string/viewitem_title"
+        android:textAllCaps="true"
+        android:textColor="#000000"
+        android:textColorHint="#6F5C72"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/viewItem_description"
+        android:layout_width="350dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="100dp"
+        android:background="#FFFFFF"
+        android:ems="10"
+        android:hint="@string/positem_description"
+        android:inputType="textImeMultiLine"
+        android:text="@string/viewitem_description"
+        android:textColor="#6F5C72" />
+
+
+    <ImageView
+        android:id="@+id/viewItem_image"
+        android:layout_width="350dp"
+        android:layout_height="350dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="210dp"
+        app:srcCompat="@color/colorAccent" />
+
+    <Button
+        android:id="@+id/viewItem_postbutton"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="570dp"
+        android:background="#80FFFFFF"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/viewitem_sellerbutton" />
+
+
+</RelativeLayout>

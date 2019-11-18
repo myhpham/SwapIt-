@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <ImageView
+        android:id="@+id/userprofileicon_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        app:srcCompat="@drawable/ic_profilebutton" />
+
+
+    <ProgressBar
+        android:visibility="gone"
+        android:id="@+id/profilepicprogressbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="3dp"
+        android:layout_marginRight="1000dp"
+        android:layout_marginBottom="15dp" />
+
+    <View
+        android:id="@+id/userprofile_divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/userprofileicon_image"
+        android:background="#281a41"
+        android:visibility="visible" />
+
+    <ImageButton
+        android:id="@+id/userprofile_image"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="25dp"
+        android:layout_below="@id/userprofile_divider"
+        tools:srcCompat="@tools:sample/avatars[0]" />
+
+
+    <TextView
+        android:id="@+id/userprofile_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userprofile_divider"
+        android:layout_marginLeft="-36dp"
+        android:layout_marginTop="37dp"
+        android:layout_toRightOf="@id/userprofileicon_image"
+        android:drawableLeft="@drawable/ic_action_username"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center"
+        android:hint="@string/userprofile_name"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <Button
+        android:id="@+id/userprofile_logout"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/userprofile_divider"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="139dp"
+        android:layout_toRightOf="@id/userprofile_image"
+        android:background="#80FFFFFF"
+        android:fontFamily="sans-serif-medium"
+        android:text="LOGOUT"
+        android:textColor="#000000"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/userprofile_savephoto"
+        android:layout_width="200dp"
+        android:layout_height="30dp"
+        android:layout_below="@id/userprofile_divider"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="99dp"
+        android:layout_toRightOf="@id/userprofile_image"
+        android:background="#80FFFFFF"
+        android:fontFamily="sans-serif-medium"
+        android:text="SAVE CHANGES"
+        android:textColor="#000000"
+        android:textSize="15sp" />
+
+    <TextView
+        android:id="@+id/userprofile_yourPosts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userprofile_image"
+        android:layout_marginLeft="5dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center"
+        android:text="@string/userprofile_yourPosts"
+        android:textColor="#000000"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <GridView
+        android:id="@+id/userprofile_gridview"
+        android:layout_width="match_parent"
+        android:layout_below="@id/userprofile_yourPosts"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp"
+        android:paddingLeft="15dp" />
+
+
+</RelativeLayout>

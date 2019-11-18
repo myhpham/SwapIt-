@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "776106883867",
+    "firebase_url": "https://swapit-e2a05.firebaseio.com",
+    "project_id": "swapit-e2a05",
+    "storage_bucket": "swapit-e2a05.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:776106883867:android:46ce0df5fa5c1034ed31be",
+        "android_client_info": {
+          "package_name": "com.zybooks.swapit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "776106883867-6be7497amep9jt5bn6ot2e3vbtruttu9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.zybooks.swapit",
+            "certificate_hash": "e77b1acc7f1056e58b9dc1a4df36687bd409065c"
+          }
+        },
+        {
+          "client_id": "776106883867-6rst6tnmholqo9c6jfm1icf8ath1b1jq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCsuUW3lwWHtuHM9mihveAfplLDrJQi2I8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "776106883867-6rst6tnmholqo9c6jfm1icf8ath1b1jq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
