@@ -20,8 +20,8 @@ public class HomePageFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_homepage, container, false);
 
-        //homepage_gridView = v.findViewById(R.id.homepage_gridview);
-        //homepage_fragmentContainer = v.findViewById(R.id.fragment_container);
+        homepage_gridView = v.findViewById(R.id.homepage_gridview);
+        homepage_fragmentContainer = v.findViewById(R.id.fragment_container);
 
         return v;
     }
