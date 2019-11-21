@@ -38,9 +38,10 @@
 
     <ImageButton
         android:id="@+id/userprofile_image"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_marginTop="25dp"
+        android:layout_marginLeft="10dp"
         android:layout_below="@id/userprofile_divider"
         tools:srcCompat="@tools:sample/avatars[0]" />
 
@@ -50,64 +51,60 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/userprofile_divider"
-        android:layout_marginLeft="-36dp"
-        android:layout_marginTop="25dp"
-        android:layout_toRightOf="@id/userprofileicon_image"
+        android:layout_marginTop="40dp"
+        android:layout_toRightOf="@id/userprofile_image"
+        android:layout_marginLeft="20dp"
         android:fontFamily="sans-serif-thin"
-        android:gravity="center"
         android:hint="@string/userprofile_name"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold" />
 
     <Button
-        android:id="@+id/userprofile_logout"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
+        android:id="@+id/userprofile_savephoto"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/userprofile_divider"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="139dp"
         android:layout_toRightOf="@id/userprofile_image"
+        android:layout_marginTop="130dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="#80FFFFFF"
+        android:fontFamily="sans-serif-medium"
+        android:text="SAVE"
+        android:textColor="#000000"
+        android:textSize="12sp" />
+
+    <Button
+        android:id="@+id/userprofile_logout"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userprofile_divider"
+        android:layout_toRightOf="@id/userprofile_savephoto"
+        android:layout_marginTop="130dp"
         android:background="#80FFFFFF"
         android:fontFamily="sans-serif-medium"
         android:text="LOGOUT"
         android:textColor="#000000"
-        android:textSize="15sp" />
+        android:textSize="12sp" />
 
-    <Button
-        android:id="@+id/userprofile_savephoto"
-        android:layout_width="200dp"
-        android:layout_height="30dp"
-        android:layout_below="@id/userprofile_divider"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="99dp"
-        android:layout_toRightOf="@id/userprofile_image"
-        android:background="#80FFFFFF"
-        android:fontFamily="sans-serif-medium"
-        android:text="SAVE CHANGES"
-        android:textColor="#000000"
-        android:textSize="15sp" />
-
-    <TextView
-        android:id="@+id/userprofile_yourPosts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <View
+        android:id="@+id/userprofile_divider2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
         android:layout_below="@id/userprofile_image"
-        android:layout_marginLeft="5dp"
-        android:layout_marginTop="20dp"
-        android:fontFamily="sans-serif-thin"
-        android:gravity="center"
-        android:text="@string/userprofile_yourPosts"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="25dp"
+        android:background="#281a41"
+        android:visibility="visible" />
 
     <GridView
         android:id="@+id/userprofile_gridview"
         android:layout_width="match_parent"
-        android:layout_below="@id/userprofile_yourPosts"
+        android:layout_below="@id/userprofile_divider2"
         android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginHorizontal="10dp"
         android:paddingLeft="15dp" />
 
 

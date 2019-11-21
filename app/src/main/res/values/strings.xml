@@ -12,7 +12,7 @@
     <string name="signup_signupButton">SIGN UP</string>
     <string name="userprofile_name">Full Name</string>
     <string name="userprofile_textView">YOUR PROFILE</string>
-    <string name="userprofile_yourPosts">YOUR POSTS</string>
+    <string name="userprofile_yourPosts">Your Posts</string>
     <string name="sellerprofile_textView">SELLER\'S PROFILE</string>
     <string name="sellerprofile_name">Seller\'s Name</string>
     <string name="sellerprofile_sellerposts">Posts</string>
