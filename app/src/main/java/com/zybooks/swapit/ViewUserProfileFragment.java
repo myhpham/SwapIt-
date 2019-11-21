@@ -46,7 +46,7 @@ public class ViewUserProfileFragment extends Fragment {
     private StorageReference storageReference;
     private FirebaseAuth firebaseAuth;
     private ImageView profilePicture;
-    private TextView TVname;
+    private TextView TVname, TVemail;
     private Button logoutbutton, saveChangesbutton;
 
     Uri uriProfileImage;
@@ -61,6 +61,7 @@ public class ViewUserProfileFragment extends Fragment {
         logoutbutton = v.findViewById(R.id.userprofile_logout);
         saveChangesbutton = v.findViewById(R.id.userprofile_savephoto);
         TVname = v.findViewById(R.id.userprofile_name);
+        TVemail = v.findViewById(R.id.userprofile_email);
         profilePicture = v.findViewById(R.id.userprofile_image);
         progressBar = v.findViewById(R.id.profilepicprogressbar);
         firebaseAuth = FirebaseAuth.getInstance();
@@ -158,13 +159,11 @@ public class ViewUserProfileFragment extends Fragment {
 
     //displays user info
     private void loadUserInformation() {
-        //TO DO HERE!
-
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("profilepics/");
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ENTRIES", getActivity().MODE_PRIVATE);
         String n = sharedPreferences.getString("Current user", "");
+        String e = sharedPreferences.getString("User email","");
 
         if(user!=null){
             if(user.getPhotoUrl() != null){
@@ -172,8 +171,11 @@ public class ViewUserProfileFragment extends Fragment {
             }
             if(user.getDisplayName() != null){
                 TVname.setText(user.getDisplayName());
+                TVemail.setText(user.getEmail());
             } else{
                 TVname.setText(n);
+                TVemail.setText(e);
+                profilePicture.setImageURI(Uri.parse(profileImageURL));
             }
         }
     }

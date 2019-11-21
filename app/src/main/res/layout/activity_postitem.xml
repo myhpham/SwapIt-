@@ -73,12 +73,12 @@
         android:layout_height="250dp"
         android:layout_below="@id/postItem_description"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="28dp"
         android:layout_marginBottom="10dp"
-        android:onClick="selectImage" />
+        android:background="#5F2C4B" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/postItem_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/postItem_image"
