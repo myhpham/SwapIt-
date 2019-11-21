@@ -34,19 +34,20 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+import java.util.UUID;
 
 public class ViewUserProfileFragment extends Fragment {
 
     //************************************
     private static final int CHOOSE_IMAGE = 101;
-    public String profileImageURL;
-    DatabaseReference databaseReference;
-
+    private String profileImageURL;
+    private DatabaseReference databaseReference;
+    private FirebaseStorage storage;
+    private StorageReference storageReference;
     private FirebaseAuth firebaseAuth;
     private ImageView profilePicture;
     private TextView TVname;
-    private Button logoutbutton;
-    private Button saveChangesbutton;
+    private Button logoutbutton, saveChangesbutton;
 
     Uri uriProfileImage;
     ProgressBar progressBar;
@@ -129,17 +130,20 @@ public class ViewUserProfileFragment extends Fragment {
 
     //*
     private void uploadImageToFirebaseStorage() {
-        StorageReference storageReference =
-                FirebaseStorage.getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
+        storage = FirebaseStorage.getInstance();
+        storageReference = storage.getReference();
+
+        //StorageReference storageReference =
+        //        FirebaseStorage.getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
 
         if(uriProfileImage != null){
             progressBar.setVisibility(View.VISIBLE);
-            storageReference.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            StorageReference ref = storageReference.child("profilepics/" + UUID.randomUUID().toString());
+            ref.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     progressBar.setVisibility(View.GONE);
                     profileImageURL = taskSnapshot.getDownloadUrl().toString();
-
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -154,6 +158,10 @@ public class ViewUserProfileFragment extends Fragment {
 
     //displays user info
     private void loadUserInformation() {
+        //TO DO HERE!
+
+        databaseReference = FirebaseDatabase.getInstance().getReference().child("profilepics/");
+
         FirebaseUser user = firebaseAuth.getCurrentUser();
         SharedPreferences sharedPreferences = getActivity().getSharedPreferences("ENTRIES", getActivity().MODE_PRIVATE);
         String n = sharedPreferences.getString("Current user", "");

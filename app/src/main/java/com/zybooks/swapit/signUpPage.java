@@ -113,7 +113,7 @@ public class signUpPage extends AppCompatActivity {
                         if(task.isSuccessful()){
                             FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                            //------------------------
+                            //-----------------------------------------------------------------------
                             String userid = user.getUid();
                             Reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
 
@@ -123,7 +123,7 @@ public class signUpPage extends AppCompatActivity {
                             hashMap.put("email",email);
                             hashMap.put("zip",zip);
                             hashMap.put("password",password);
-                            //------------------------
+                            //-----------------------------------------------------------------------
 
                             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(fullName).build();
                             user.updateProfile(profileChangeRequest);
