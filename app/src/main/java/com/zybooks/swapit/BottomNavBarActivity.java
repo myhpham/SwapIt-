@@ -8,12 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.zybooks.swapit.ui.home.HomeFragment;
 
 public class BottomNavBarActivity extends AppCompatActivity {
 
     private BottomNavigationView bottomNavView;
-    //Fragment active;
+    Fragment active;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,8 +23,8 @@ public class BottomNavBarActivity extends AppCompatActivity {
         bottomNavView.setOnNavigationItemSelectedListener(navListener);
 
         if (savedInstanceState == null) {
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new ViewUserProfileFragment()).commit();
-            //active = new ViewUserProfileFragment();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomePageFragment()).commit();
+            active = new HomePageFragment();
         }
     }
 
@@ -40,7 +39,7 @@ public class BottomNavBarActivity extends AppCompatActivity {
                             selectedFragment = new ViewUserProfileFragment();
                             break;
                         case R.id.navigation_home:
-                            selectedFragment = new HomeFragment();
+                            selectedFragment = new HomePageFragment();
                             break;
                         case R.id.navigation_addpost:
                             selectedFragment = new PostItemFragment();
@@ -50,10 +49,9 @@ public class BottomNavBarActivity extends AppCompatActivity {
                             break;
                     }
 
-                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,
-                            selectedFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container,selectedFragment).commit();
 
-                    return true;
+                    return false;
                 }
             };
 }

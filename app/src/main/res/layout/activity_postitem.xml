@@ -38,13 +38,13 @@
         android:visibility="visible" />
 
 
-
     <EditText
         android:id="@+id/postItem_title"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="40dp"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="120dp"
+        android:layout_below="@id/userprofile_divider"
+        android:layout_marginTop="50dp"
         android:background="#11000000"
         android:ems="10"
         android:hint="@string/postitem_title"
@@ -54,10 +54,11 @@
 
     <EditText
         android:id="@+id/postItem_description"
-        android:layout_width="300dp"
+        android:layout_width="250dp"
         android:layout_height="100dp"
+        android:layout_below="@id/postItem_title"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="170dp"
+        android:layout_marginTop="10dp"
         android:background="#11000000"
         android:ems="10"
         android:hint="@string/positem_description"
@@ -68,10 +69,12 @@
 
     <ImageView
         android:id="@+id/postItem_image"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_below="@id/postItem_description"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="290dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
         android:onClick="selectImage" />
 
     <Button
@@ -80,8 +83,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/postItem_image"
         android:layout_marginHorizontal="160dp"
-        android:layout_marginTop="0dp"
-        android:backgroundTint="#E2DEDE"
+        android:backgroundTint="@color/buttonBackground"
         android:text="@string/postitem_postbutton"
         android:textColor="#4E4C4C" />
 

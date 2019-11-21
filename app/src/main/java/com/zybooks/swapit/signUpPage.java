@@ -32,6 +32,7 @@ import com.google.firebase.auth.AuthResult;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class signUpPage extends AppCompatActivity {
 
@@ -41,6 +42,7 @@ public class signUpPage extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authStateListener;
     private ArrayList<String> arrayList;
     ProgressBar progressBar;
+    DatabaseReference Reference;
 
     @Override
 
@@ -61,9 +63,9 @@ public class signUpPage extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 final String fullName = ETfullName.getText().toString().trim();
-                String email = ETemail.getText().toString().trim();
-                String password = ETpassword.getText().toString().trim();
-                String zip = ETzip.getText().toString().trim();
+                final String email = ETemail.getText().toString().trim();
+                final String password = ETpassword.getText().toString().trim();
+                final String zip = ETzip.getText().toString().trim();
 
                 if(TextUtils.isEmpty(fullName)){
                     ETfullName.setError("Please enter your full name");
@@ -110,6 +112,19 @@ public class signUpPage extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             FirebaseUser user = firebaseAuth.getCurrentUser();
+
+                            //------------------------
+                            String userid = user.getUid();
+                            Reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+
+                            HashMap<String,String>hashMap = new HashMap<>();
+                            hashMap.put("id",userid);
+                            hashMap.put("name",fullName);
+                            hashMap.put("email",email);
+                            hashMap.put("zip",zip);
+                            hashMap.put("password",password);
+                            //------------------------
+
                             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(fullName).build();
                             user.updateProfile(profileChangeRequest);
 
