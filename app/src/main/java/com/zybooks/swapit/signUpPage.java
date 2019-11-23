@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.FirebaseError;
@@ -49,6 +50,12 @@ public class signUpPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        /*
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("Create Account");
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDefaultDisplayHomeAsUpEnabled(true);*/
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -113,17 +120,26 @@ public class signUpPage extends AppCompatActivity {
                         if(task.isSuccessful()){
                             FirebaseUser user = firebaseAuth.getCurrentUser();
 
-                            //-----------------------------------------------------------------------
+                            //------------------------
                             String userid = user.getUid();
-                            Reference = FirebaseDatabase.getInstance().getReference("Users").child(userid);
+                            String useremail = user.getEmail();
+                            String userFullName;
+                            String userzip;
+                            String userimg;
 
-                            HashMap<String,String>hashMap = new HashMap<>();
-                            hashMap.put("id",userid);
-                            hashMap.put("name",fullName);
+                            HashMap<Object,String>hashMap = new HashMap<>();
+                            hashMap.put("uid",userid);
                             hashMap.put("email",email);
+                            hashMap.put("name",fullName);
                             hashMap.put("zip",zip);
                             hashMap.put("password",password);
-                            //-----------------------------------------------------------------------
+                            hashMap.put("image","");
+
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            DatabaseReference reference = database.getReference("Users");
+                            reference.child(userid).setValue(hashMap);
+
+                            //------------------------
 
                             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(fullName).build();
                             user.updateProfile(profileChangeRequest);
@@ -131,16 +147,18 @@ public class signUpPage extends AppCompatActivity {
                             SharedPreferences sharedPreferences = getSharedPreferences("ENTRIES",0);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putString("Current user", fullName);
+                            editor.putString("User email", email);
                             editor.apply();
 
                             progressBar.setVisibility(View.GONE);
                             Toast.makeText(signUpPage.this, "Successfully signed up!", Toast.LENGTH_LONG).show();
 
                             finish();
-                            Intent intent = new Intent(signUpPage.this, ViewUserProfileFragment.class);
+                            Intent intent = new Intent(signUpPage.this, MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                             startActivity(intent);
                         } else{
+                            progressBar.setVisibility(View.GONE);
                             if(task.getException() instanceof FirebaseAuthUserCollisionException){
                                 Toast.makeText(signUpPage.this, "This email is already registered.", Toast.LENGTH_LONG).show();
                             } else{
@@ -155,4 +173,10 @@ public class signUpPage extends AppCompatActivity {
 
     }
 
+    /*
+    @Override
+    public boolean onSupportNavigateUp() {
+        onBackPressed(); //go to previous activity
+        return super.onSupportNavigateUp();
+    }*/
 }

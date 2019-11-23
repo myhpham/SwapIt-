@@ -38,12 +38,11 @@
 
     <ImageButton
         android:id="@+id/userprofile_image"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="10dp"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
         android:layout_below="@id/userprofile_divider"
-        tools:srcCompat="@tools:sample/avatars[0]" />
+        android:layout_marginTop="25dp"
+        android:src="@drawable/ic_add_a_photo_black_24dp" />
 
 
     <TextView
@@ -51,13 +50,30 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/userprofile_divider"
-        android:layout_marginTop="40dp"
-        android:layout_toRightOf="@id/userprofile_image"
-        android:layout_marginLeft="20dp"
+        android:layout_marginLeft="-36dp"
+        android:layout_marginTop="36dp"
+        android:layout_toRightOf="@id/userprofileicon_image"
         android:fontFamily="sans-serif-thin"
+        android:gravity="center"
         android:hint="@string/userprofile_name"
+        android:textAllCaps="true"
         android:textColor="#000000"
         android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/userprofile_email"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userprofile_divider"
+        android:layout_marginLeft="-33dp"
+        android:layout_marginTop="65dp"
+        android:layout_toRightOf="@id/userprofileicon_image"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center"
+        android:hint="@string/userprofile_name"
+        android:textColor="#000000"
+        android:textSize="12sp"
         android:textStyle="bold" />
 
     <Button
