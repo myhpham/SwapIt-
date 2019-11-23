@@ -34,20 +34,34 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+<<<<<<< Updated upstream
 import java.util.UUID;
+=======
+import java.util.HashMap;
+
+import static com.google.firebase.storage.FirebaseStorage.getInstance;
+>>>>>>> Stashed changes
 
 public class ViewUserProfileFragment extends Fragment {
 
     //************************************
     private static final int CHOOSE_IMAGE = 101;
-    private String profileImageURL;
-    private DatabaseReference databaseReference;
-    private FirebaseStorage storage;
-    private StorageReference storageReference;
+    public String profileImageURL;
+    DatabaseReference databaseReference;
+    StorageReference storageReference;
+    FirebaseDatabase firebaseDatabase;
+    FirebaseUser user;
+
     private FirebaseAuth firebaseAuth;
     private ImageView profilePicture;
     private TextView TVname;
+<<<<<<< Updated upstream
     private Button logoutbutton, saveChangesbutton;
+=======
+    private TextView TVemail;
+    private Button logoutbutton;
+    private Button saveChangesbutton;
+>>>>>>> Stashed changes
 
     Uri uriProfileImage;
     ProgressBar progressBar;
@@ -61,11 +75,20 @@ public class ViewUserProfileFragment extends Fragment {
         logoutbutton = v.findViewById(R.id.userprofile_logout);
         saveChangesbutton = v.findViewById(R.id.userprofile_savephoto);
         TVname = v.findViewById(R.id.userprofile_name);
+<<<<<<< Updated upstream
+=======
+        TVemail = v.findViewById(R.id.userprofile_email);
+
+>>>>>>> Stashed changes
         profilePicture = v.findViewById(R.id.userprofile_image);
         progressBar = v.findViewById(R.id.profilepicprogressbar);
+
+
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Users");
+        storageReference = getInstance().getReference();
 
         firebaseAuth.getCurrentUser();
 
@@ -103,8 +126,6 @@ public class ViewUserProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //userProfile u = new userProfile();
-        //u.loadUserInformation();
     }
 
     //************************************
@@ -130,20 +151,17 @@ public class ViewUserProfileFragment extends Fragment {
 
     //*
     private void uploadImageToFirebaseStorage() {
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
-
-        //StorageReference storageReference =
-        //        FirebaseStorage.getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
+        StorageReference storageReference =
+                getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
 
         if(uriProfileImage != null){
             progressBar.setVisibility(View.VISIBLE);
-            StorageReference ref = storageReference.child("profilepics/" + UUID.randomUUID().toString());
-            ref.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            storageReference.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     progressBar.setVisibility(View.GONE);
                     profileImageURL = taskSnapshot.getDownloadUrl().toString();
+
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -178,7 +196,7 @@ public class ViewUserProfileFragment extends Fragment {
         }
     }
 
-    //*
+
     private void chooseProfilePicture(){
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -186,7 +204,7 @@ public class ViewUserProfileFragment extends Fragment {
         startActivityForResult(Intent.createChooser(intent,"Select Profile Photo"), CHOOSE_IMAGE);
     }
 
-    //*
+
     private void saveUserInformation(){
         FirebaseUser user = firebaseAuth.getCurrentUser();
 
@@ -197,7 +215,6 @@ public class ViewUserProfileFragment extends Fragment {
 
         if(user!=null && profileImageURL != null){
             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(user.getDisplayName()).setPhotoUri(Uri.parse(profileImageURL)).build();
-
             user.updateProfile(profileChangeRequest).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override
                 public void onComplete(@NonNull Task<Void> task) {
