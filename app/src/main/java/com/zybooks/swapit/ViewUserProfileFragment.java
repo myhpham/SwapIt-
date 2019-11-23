@@ -37,21 +37,30 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.IOException;
+import java.util.HashMap;
+
+import static com.google.firebase.storage.FirebaseStorage.getInstance;
+
 public class ViewUserProfileFragment extends Fragment {
 
     //************************************
     private static final int CHOOSE_IMAGE = 101;
     private String profileImageURL;
     private DatabaseReference databaseReference;
-    private FirebaseStorage storage;
     private StorageReference storageReference;
+    private FirebaseDatabase firebaseDatabase;
+    private FirebaseUser user;
+
     private FirebaseAuth firebaseAuth;
     private ImageView profilePicture;
-    private TextView TVname, TVemail;
-    private Button logoutbutton, saveChangesbutton;
+    private TextView TVname;
+    private TextView TVemail;
+    private Button logoutbutton;
+    private Button saveChangesbutton;
 
-    Uri uriProfileImage;
-    ProgressBar progressBar;
+    private Uri uriProfileImage;
+    private ProgressBar progressBar;
     //************************************
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -59,28 +68,39 @@ public class ViewUserProfileFragment extends Fragment {
         View v = inflater.inflate(R.layout.activity_viewuserprofile, container, false);
 
         //************************************
+        //layout items---------------------------
         logoutbutton = v.findViewById(R.id.userprofile_logout);
         saveChangesbutton = v.findViewById(R.id.userprofile_savephoto);
         TVname = v.findViewById(R.id.userprofile_name);
         TVemail = v.findViewById(R.id.userprofile_email);
         profilePicture = v.findViewById(R.id.userprofile_image);
         progressBar = v.findViewById(R.id.profilepicprogressbar);
+        //layout items---------------------------
+
+        //firebase items---------------------------
         firebaseAuth = FirebaseAuth.getInstance();
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        databaseReference = FirebaseDatabase.getInstance().getReference();
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Users");
+        storageReference = getInstance().getReference();
+        //firebase items---------------------------
 
+        //get data of current user from firebase------------------
         firebaseAuth.getCurrentUser();
+        //get data of current user from firebase------------------
 
-        loadUserInformation();
+        loadUserInformation();              //call function to load user's information
 
         profilePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //function to choose profile picture
                 chooseProfilePicture();
 
             }
         });
 
+        //logout functionality
         logoutbutton.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v) {
@@ -90,7 +110,7 @@ public class ViewUserProfileFragment extends Fragment {
             }
         });
 
-
+        //button that calls saves changes (to user profile onto database)
         saveChangesbutton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -132,20 +152,17 @@ public class ViewUserProfileFragment extends Fragment {
 
     //*
     private void uploadImageToFirebaseStorage() {
-        storage = FirebaseStorage.getInstance();
-        storageReference = storage.getReference();
-
-        //StorageReference storageReference =
-        //        FirebaseStorage.getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
+        StorageReference storageReference =
+                getInstance().getReference("profilepics/" + System.currentTimeMillis() + ".jpg");
 
         if(uriProfileImage != null){
             progressBar.setVisibility(View.VISIBLE);
-            StorageReference ref = storageReference.child("profilepics/" + UUID.randomUUID().toString());
-            ref.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            storageReference.putFile(uriProfileImage).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     progressBar.setVisibility(View.GONE);
                     profileImageURL = taskSnapshot.getDownloadUrl().toString();
+
 
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -158,7 +175,7 @@ public class ViewUserProfileFragment extends Fragment {
         }
     }
 
-    //displays user info
+    //loads user information
     private void loadUserInformation() {
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
