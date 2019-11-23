@@ -92,7 +92,7 @@ public class PostItemFragment extends Fragment {
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        pd = new ProgressDialog(getActivity().getApplicationContext());
+        pd = new ProgressDialog(getActivity());
 
         firebaseAuth = FirebaseAuth.getInstance();
         checkUserStatus();
@@ -137,7 +137,7 @@ public class PostItemFragment extends Fragment {
     private void showImagePickDialog() {
         String[] options = {"Camera","Gallery"};
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity().getApplicationContext());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         builder.setTitle("CHOOSE IMAGE FROM");
 
         builder.setItems(options, new DialogInterface.OnClickListener() {
@@ -176,11 +176,11 @@ public class PostItemFragment extends Fragment {
         String description = postDesc.getText().toString().trim();
 
         if(TextUtils.isEmpty(title)){
-            Toast.makeText(getActivity().getApplicationContext(), "Please enter title", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please enter title", Toast.LENGTH_SHORT).show();
             return;
         }
         if(TextUtils.isEmpty(description)){
-            Toast.makeText(getActivity().getApplicationContext(), "Please enter description", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Please enter description", Toast.LENGTH_SHORT).show();
             return;
         }
         if(image_uri == null){ // posting without image
@@ -229,7 +229,7 @@ public class PostItemFragment extends Fragment {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 pd.dismiss();
-                                Toast.makeText(getActivity().getApplicationContext(), "Post published successfully!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Post published successfully!", Toast.LENGTH_SHORT).show();
 
                                 //reset views
                                 postTitle.setText("");
@@ -241,7 +241,7 @@ public class PostItemFragment extends Fragment {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 pd.dismiss();
-                                Toast.makeText(getActivity().getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
 
@@ -251,7 +251,7 @@ public class PostItemFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     pd.dismiss();
-                    Toast.makeText(getActivity().getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
         } else { //post without image
@@ -273,7 +273,7 @@ public class PostItemFragment extends Fragment {
                 @Override
                 public void onSuccess(Void aVoid) {
                     pd.dismiss();
-                    Toast.makeText(getActivity().getApplicationContext(), "Post published successfully!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "Post published successfully!", Toast.LENGTH_SHORT).show();
                     //reset views
                     postTitle.setText("");
                     postDesc.setText("");
@@ -284,7 +284,7 @@ public class PostItemFragment extends Fragment {
                 @Override
                 public void onFailure(@NonNull Exception e) {
                     pd.dismiss();
-                    Toast.makeText(getActivity().getApplicationContext(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -303,7 +303,7 @@ public class PostItemFragment extends Fragment {
                     if(cameraAccepted&&storageAccepted){
                         pickFromCamera();
                     } else{
-                        Toast.makeText(getActivity().getApplicationContext(), "Camera & Storage permissions needed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Camera & Storage permissions needed", Toast.LENGTH_SHORT).show();
                     }
                 } else{
 
@@ -317,7 +317,7 @@ public class PostItemFragment extends Fragment {
                         pickFromGallery();
                     }
                     else{
-                        Toast.makeText(getActivity().getApplicationContext(), "Storage permission needed", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getActivity(), "Storage permission needed", Toast.LENGTH_SHORT).show();
                     }
                 }
             }
@@ -352,7 +352,7 @@ public class PostItemFragment extends Fragment {
             email = user.getEmail();
             uid = user.getUid();
         } else{
-            startActivity(new Intent(getActivity().getApplicationContext(),MainActivity.class));
+            startActivity(new Intent(getActivity(),MainActivity.class));
             getActivity().finish();
         }
     }
