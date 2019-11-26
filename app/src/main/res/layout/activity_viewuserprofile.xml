@@ -66,7 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/userprofile_divider"
-        android:layout_marginLeft="-33dp"
+        android:layout_marginLeft="-36dp"
         android:layout_marginTop="65dp"
         android:layout_toRightOf="@id/userprofileicon_image"
         android:fontFamily="sans-serif-thin"
