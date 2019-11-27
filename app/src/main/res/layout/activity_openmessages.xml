@@ -21,7 +21,7 @@
         android:id="@+id/viewmessages_divider"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/userprofileicon_image"
+        android:layout_below="@id/sellerprofileicon_image"
         android:background="#281a41"
         android:visibility="visible" />
 

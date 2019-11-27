@@ -6,76 +6,82 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
-    <TextView
-        android:id="@+id/sellerprofile_textView"
+    <ImageView
+        android:id="@+id/sellerprofileicon_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="110dp"
-        android:fontFamily="sans-serif-light"
-        android:text="@string/sellerprofile_textView"
-        android:textColor="#000000"
-        android:textSize="40sp" />
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="15dp"
+        app:srcCompat="@drawable/ic_sellerprofile_icon_24dp" />
 
     <View
         android:id="@+id/sellerprofile_divider"
         android:layout_width="match_parent"
-        android:layout_height="10dp"
-        android:layout_marginTop="200dp"
+        android:layout_height="2dp"
+        android:layout_below="@id/sellerprofileicon_image"
         android:background="#281a41"
         android:visibility="visible" />
 
     <ImageView
         android:id="@+id/sellerprofile_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="240dp"
-        android:paddingLeft="30dp"
-        tools:srcCompat="@tools:sample/avatars" />
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_below="@id/sellerprofile_divider"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        app:srcCompat="@drawable/ic_launcher_background" />
+
 
     <TextView
         android:id="@+id/sellerprofile_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="170dp"
-        android:layout_marginTop="240dp"
+        android:layout_below="@id/sellerprofile_divider"
+        android:layout_marginLeft="-36dp"
+        android:layout_marginTop="36dp"
+        android:layout_toRightOf="@id/sellerprofileicon_image"
         android:fontFamily="sans-serif-thin"
-        android:text="@string/sellerprofile_name"
+        android:gravity="center"
+        android:hint="@string/sellerprofile_name"
+        android:textAllCaps="true"
         android:textColor="#000000"
         android:textSize="18sp"
         android:textStyle="bold" />
-
 
     <Button
-        android:id="@+id/sellerprofile_messagebutton"
-        android:layout_width="200dp"
+        android:id="@+id/sellerprofile_messageseller"
+        android:layout_width="100dp"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="170dp"
-        android:layout_marginTop="300dp"
+        android:layout_below="@id/sellerprofile_divider"
+        android:layout_toRightOf="@id/sellerprofile_image"
+        android:layout_marginTop="130dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
         android:background="#80FFFFFF"
         android:fontFamily="sans-serif-medium"
-        android:text="@string/sellerprofile_messagebutton"
+        android:text="@string/sellerprofile_messageseller_string"
         android:textColor="#000000"
-        android:textSize="15sp" />
+        android:textSize="12sp" />
 
-    <TextView
-        android:id="@+id/sellerprofile_sellerPosts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="400dp"
-        android:fontFamily="sans-serif-thin"
-        android:text="@string/sellerprofile_sellerposts"
-        android:textColor="#000000"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+    <View
+        android:id="@+id/sellerprofile_divider2"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/sellerprofile_image"
+        android:layout_marginTop="25dp"
+        android:background="#281a41"
+        android:visibility="visible" />
 
     <GridView
         android:id="@+id/sellerprofile_gridview"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="440dp"
+        android:layout_below="@id/sellerprofile_divider2"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="50dp"
+        android:layout_marginHorizontal="10dp"
         android:paddingLeft="15dp" />
 
 
