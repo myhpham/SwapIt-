@@ -17,7 +17,7 @@
     <string name="sellerprofile_name">Seller\'s Name</string>
     <string name="sellerprofile_sellerposts">Posts</string>
     <string name="sellerprofile_messagebutton">Message Seller</string>
-    <string name="postitem_title">Title</string>
+    <string name="postitem_title">Item Name</string>
     <string name="positem_description">Description</string>
     <string name="postitem_postbutton">POST</string>
     <string name="viewitem_title">Title</string>

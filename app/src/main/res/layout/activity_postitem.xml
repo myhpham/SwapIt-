@@ -61,11 +61,11 @@
         android:layout_marginTop="10dp"
         android:background="#11000000"
         android:ems="10"
+        android:gravity="top"
         android:hint="@string/positem_description"
         android:inputType="textImeMultiLine"
         android:textColor="@color/primaryDark"
         android:textColorHint="#6F5C72" />
-
 
     <ImageView
         android:id="@+id/postItem_image"
@@ -73,7 +73,7 @@
         android:layout_height="250dp"
         android:layout_below="@id/postItem_description"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="28dp"
+        android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
         android:background="#5F2C4B" />
 
@@ -82,9 +82,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/postItem_image"
-        android:layout_marginHorizontal="160dp"
         android:backgroundTint="@color/buttonBackground"
         android:text="@string/postitem_postbutton"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
         android:textColor="#4E4C4C" />
 
 

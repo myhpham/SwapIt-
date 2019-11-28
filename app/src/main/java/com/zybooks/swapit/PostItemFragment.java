@@ -8,12 +8,15 @@ import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.icu.text.SimpleDateFormat;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +27,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -41,6 +45,9 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Date;
 import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
@@ -68,10 +75,12 @@ public class PostItemFragment extends Fragment {
     String[] storagePermissions;
 
     //user info
-    String name, email, uid, dp;
+    String name, email, uid, dp, mCurrentPhotoPath;
 
     Uri image_uri = null;
     ProgressDialog pd;
+
+    private final String TAG = "PostItemFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -131,6 +140,7 @@ public class PostItemFragment extends Fragment {
                 storePostInformation();
             }
         });
+
         return v;
     }
 
@@ -155,11 +165,13 @@ public class PostItemFragment extends Fragment {
     }
 
     private void pickFromGallery() {
-        Intent intent = new Intent(Intent.ACTION_PICK);
+        Intent intent = new Intent();
+        intent.setAction(Intent.ACTION_GET_CONTENT);
         intent.setType("image/*");
         startActivityForResult(intent,IMAGE_PICK_GALLERY_CODE);
     }
 
+    //take image with camera
     private void pickFromCamera() {
         ContentValues cv = new ContentValues();
         cv.put(MediaStore.Images.Media.TITLE, "Temp Pick");
@@ -192,6 +204,8 @@ public class PostItemFragment extends Fragment {
     }
 
     private void uploadData(final String title, final String description, String uri) {
+        Log.d(TAG, "Attempting to publish post...");
+
         pd.setMessage("Publishing post...");
         pd.show();
 
@@ -268,6 +282,7 @@ public class PostItemFragment extends Fragment {
 
             //path to store data
             DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
+
             //put data in ref
             ref.child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
@@ -287,7 +302,6 @@ public class PostItemFragment extends Fragment {
                     Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
                 }
             });
-
         }
     }
 
@@ -332,7 +346,7 @@ public class PostItemFragment extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-
+        super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == RESULT_OK){
             if(requestCode == IMAGE_PICK_GALLERY_CODE){
                 image_uri = data.getData();
@@ -342,7 +356,6 @@ public class PostItemFragment extends Fragment {
                 postImage.setImageURI(image_uri);
             }
         }
-        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void checkUserStatus(){

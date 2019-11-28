@@ -7,7 +7,7 @@
     android:background="#FFFFFF">
 
     <ImageView
-        android:id="@+id/sellerprofileicon_image"
+        android:id="@+id/userprofileicon_image"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
@@ -32,7 +32,7 @@
         android:id="@+id/userprofile_divider"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:layout_below="@id/sellerprofileicon_image"
+        android:layout_below="@id/userprofileicon_image"
         android:background="#281a41"
         android:visibility="visible" />
 
@@ -52,7 +52,7 @@
         android:layout_below="@id/userprofile_divider"
         android:layout_marginLeft="-36dp"
         android:layout_marginTop="36dp"
-        android:layout_toRightOf="@id/sellerprofileicon_image"
+        android:layout_toRightOf="@id/userprofileicon_image"
         android:fontFamily="sans-serif-thin"
         android:gravity="center"
         android:hint="@string/userprofile_name"
@@ -68,13 +68,29 @@
         android:layout_below="@id/userprofile_divider"
         android:layout_marginLeft="-36dp"
         android:layout_marginTop="65dp"
-        android:layout_toRightOf="@id/sellerprofileicon_image"
+        android:layout_toRightOf="@id/userprofileicon_image"
         android:fontFamily="sans-serif-thin"
         android:gravity="center"
         android:hint="@string/userprofile_name"
         android:textColor="#000000"
         android:textSize="12sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/userprofile_zip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/userprofile_divider"
+        android:layout_marginLeft="-28dp"
+        android:layout_marginTop="80dp"
+        android:layout_toRightOf="@id/userprofileicon_image"
+        android:fontFamily="sans-serif-thin"
+        android:gravity="center"
+        android:textColor="#000000"
+        android:textSize="12sp"
+        android:textStyle="bold" />
+
+    <!--
 
     <Button
         android:id="@+id/userprofile_savephoto"
@@ -89,20 +105,21 @@
         android:fontFamily="sans-serif-medium"
         android:text="SAVE"
         android:textColor="#000000"
-        android:textSize="12sp" />
+        android:textSize="12sp" /> -->
 
     <Button
         android:id="@+id/userprofile_logout"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
         android:layout_below="@id/userprofile_divider"
-        android:layout_toRightOf="@id/userprofile_savephoto"
         android:layout_marginTop="130dp"
+        android:layout_toRightOf="@id/userprofile_image"
         android:background="#80FFFFFF"
         android:fontFamily="sans-serif-medium"
         android:text="LOGOUT"
         android:textColor="#000000"
-        android:textSize="12sp" />
+        android:textSize="12sp"
+        android:layout_marginLeft="10dp"/>
 
     <View
         android:id="@+id/userprofile_divider2"
@@ -122,6 +139,20 @@
         android:layout_marginBottom="50dp"
         android:layout_marginHorizontal="10dp"
         android:paddingLeft="15dp" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fab"
+        android:src="@drawable/ic_edit_black_24sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
+        android:layout_marginBottom="10dp"
+        app:backgroundTint="#97699E" />
 
 
 </RelativeLayout>
