@@ -27,12 +27,9 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,10 +43,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
@@ -237,9 +231,6 @@ public class PostItemFragment extends Fragment {
         postDateAndTime = saveCurrentDate + " " + saveCurrentTime;
 
         //---------------Post Date and Time------------------------------------
-
-        final String timestamp = String.valueOf(System.currentTimeMillis());
-        String filePathAndName = "" + timestamp;
 
         if(imageUri != null){
             //mCurrentPhotoPath = imageUri.getLastPathSegment();

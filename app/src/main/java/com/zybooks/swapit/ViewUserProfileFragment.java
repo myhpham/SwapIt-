@@ -58,7 +58,7 @@ import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
 public class ViewUserProfileFragment extends Fragment {
 
-    public ViewUserProfileFragment(){
+    public ViewUserProfileFragment() {
 
     }
 
@@ -67,7 +67,7 @@ public class ViewUserProfileFragment extends Fragment {
     FirebaseDatabase firebaseDatabase;
     FirebaseUser user;
     FirebaseAuth firebaseAuth;
-    StorageReference storageReference;
+    StorageReference storageReference, profilePicRef;
 
     //path where profile pictures go
     String storagePath = "Users_ProfilePictures/";
@@ -90,7 +90,7 @@ public class ViewUserProfileFragment extends Fragment {
 
     //uri of picked image for profile pic
     Uri image_uri;
-    String profilePhoto;
+    String profilePhoto, downloadUri;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -101,6 +101,7 @@ public class ViewUserProfileFragment extends Fragment {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Users");
         storageReference = getInstance().getReference();
+        profilePicRef = FirebaseStorage.getInstance().getReference();
 
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -183,8 +184,6 @@ public class ViewUserProfileFragment extends Fragment {
     private void requestCameraPermission(){
         requestPermissions(cameraPermissions, CAMERA_REQUEST_CODE);
     }
-
-
 
     private void showEditProfileDialog() {
         String options[] = {"Edit profile picture", "Edit name"};
@@ -345,6 +344,30 @@ public class ViewUserProfileFragment extends Fragment {
     }
 
     private void uploadProfilePicture(Uri uri) {
+
+        //-------------------------------------------------------------
+
+        pd.setMessage("Updating profile image...");
+        pd.show();
+
+        if(uri != null){
+            profilePhoto = uri.toString();
+            StorageReference filePath = profilePicRef.child(user.getUid()).child("image");
+            filePath.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if(task.isSuccessful()) {
+                        downloadUri = task.getResult().getDownloadUrl().toString();
+                        pd.dismiss();
+                        profilePicToDatabase();
+                    }
+                }
+            });
+        }
+
+        //-------------------------------------------------------------
+
+        /*
         String filePathandName = storagePath + "" + profilePhoto + "_" + user.getUid();
 
         StorageReference storageReference2 = storageReference.child(filePathandName);
@@ -389,6 +412,7 @@ public class ViewUserProfileFragment extends Fragment {
                 Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
+         */
     }
 
 
@@ -429,5 +453,33 @@ public class ViewUserProfileFragment extends Fragment {
 
     }
 
+    private void profilePicToDatabase() {
+        databaseReference.child(user.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
 
+                    HashMap result = new HashMap();
+                    result.put("image", downloadUri);
+
+                    databaseReference.child(user.getUid()).updateChildren(result).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getActivity(), "Profile photo updated", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "Could not update profile photo", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //do nothing
+            }
+        });
+    }
 }
