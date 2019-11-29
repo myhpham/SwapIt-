@@ -75,7 +75,10 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:background="#5F2C4B" />
+        android:background="#CACACA"
+        android:scaleType="centerInside"
+        android:src="@drawable/ic_add_plus_24dp"
+        app:srcCompat="@drawable/ic_add_to_photos_black_24dp" />
 
     <Button
         android:id="@+id/postItem_button"
