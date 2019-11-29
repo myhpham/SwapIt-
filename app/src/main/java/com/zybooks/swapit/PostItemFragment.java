@@ -230,11 +230,11 @@ public class PostItemFragment extends Fragment {
         saveCurrentDate = currentDate.format(date.getTime());
 
         Calendar time = Calendar.getInstance();
-        SimpleDateFormat currentTime = new SimpleDateFormat("HH:MM");
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:MM:SS");
         saveCurrentTime = currentTime.format(time.getTime());
 
         //global string variable for date and time
-        postDateAndTime = saveCurrentDate + saveCurrentTime;
+        postDateAndTime = saveCurrentDate + " " + saveCurrentTime;
 
         //---------------Post Date and Time------------------------------------
 
@@ -242,8 +242,9 @@ public class PostItemFragment extends Fragment {
         String filePathAndName = "" + timestamp;
 
         if(imageUri != null){
-            String imgString = imageUri.getLastPathSegment();
-            StorageReference filePath = PostItemStorageRef.child("Posts").child(imgString + postDateAndTime + ".jpg");
+            //mCurrentPhotoPath = imageUri.getLastPathSegment();
+            mCurrentPhotoPath = imageUri.toString();
+            StorageReference filePath = PostItemStorageRef.child("Posts").child(mCurrentPhotoPath + ".jpg");
             filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
@@ -344,7 +345,7 @@ public class PostItemFragment extends Fragment {
                     postsMap.put("pDescr", itemDescription);
                     postsMap.put("pImage", downloadUri);
 
-                    postsDb.child(uid).updateChildren(postsMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    postsDb.child(uid+ " " + itemName + " " + postDateAndTime).updateChildren(postsMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
