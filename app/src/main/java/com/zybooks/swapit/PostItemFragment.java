@@ -30,6 +30,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -47,6 +48,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -59,7 +61,8 @@ public class PostItemFragment extends Fragment {
     private ImageView postImage;
     private Button postButton;
     private FirebaseAuth firebaseAuth;
-    private DatabaseReference userDb;
+    private DatabaseReference userDb, postsDb;
+    private StorageReference PostItemStorageRef;
     ActionBar actionBar;
 
     //permissions constants
@@ -75,7 +78,11 @@ public class PostItemFragment extends Fragment {
     String[] storagePermissions;
 
     //user info
-    String name, email, uid, dp, mCurrentPhotoPath;
+    private String name, email, uid, dp, mCurrentPhotoPath;
+
+    //post info
+    private String saveCurrentDate, saveCurrentTime, postDateAndTime, downloadUri;
+    private String itemName, itemDescription;
 
     Uri image_uri = null;
     ProgressDialog pd;
@@ -98,6 +105,12 @@ public class PostItemFragment extends Fragment {
         getActivity().getActionBar().setDisplayShowHomeEnabled(true);
         getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);*/
 
+        //-----Firebase Storage Reference-----------
+        //PostItemStorageRef = FirebaseStorage.getInstance().getReference().child(filePathAndName);
+        PostItemStorageRef = FirebaseStorage.getInstance().getReference();
+        postsDb = FirebaseDatabase.getInstance().getReference().child("Posts");
+        //-----Firebase Storage Reference-----------
+
         cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
@@ -105,7 +118,7 @@ public class PostItemFragment extends Fragment {
 
         firebaseAuth = FirebaseAuth.getInstance();
         checkUserStatus();
-        userDb = FirebaseDatabase.getInstance().getReference("Users");
+        userDb = FirebaseDatabase.getInstance().getReference("Users");  //get USERS database reference
         Query query = userDb.orderByChild("email").equalTo(email);
         query.addValueEventListener(new ValueEventListener() {
             @Override
@@ -184,122 +197,64 @@ public class PostItemFragment extends Fragment {
     }
 
     private void storePostInformation() {
-        String title = postTitle.getText().toString().trim();
-        String description = postDesc.getText().toString().trim();
+        //now are global variables
+        itemName = postTitle.getText().toString().trim();
+        itemDescription = postDesc.getText().toString().trim();
 
-        if(TextUtils.isEmpty(title)){
+        if(TextUtils.isEmpty(itemName)){
             Toast.makeText(getActivity(), "Please enter title", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(TextUtils.isEmpty(description)){
+        if(TextUtils.isEmpty(itemDescription)){
             Toast.makeText(getActivity(), "Please enter description", Toast.LENGTH_SHORT).show();
             return;
         }
         if(image_uri == null){ // posting without image
-            uploadData(title, description, "noImage");
+            uploadData(itemName, itemDescription, null);
         }
         else{
-            uploadData(title, description, String.valueOf(image_uri));
+            uploadData(itemName, itemDescription, image_uri);
         }
     }
 
-    private void uploadData(final String title, final String description, String uri) {
+    private void uploadData(final String title, final String description, Uri imageUri) {
         Log.d(TAG, "Attempting to publish post...");
 
         pd.setMessage("Publishing post...");
         pd.show();
 
+        //---------------Post Date and Time------------------------------------
+
+        Calendar date = Calendar.getInstance();
+        SimpleDateFormat currentDate = new SimpleDateFormat("DD-MM-YYYY");
+        saveCurrentDate = currentDate.format(date.getTime());
+
+        Calendar time = Calendar.getInstance();
+        SimpleDateFormat currentTime = new SimpleDateFormat("HH:MM");
+        saveCurrentTime = currentTime.format(time.getTime());
+
+        //global string variable for date and time
+        postDateAndTime = saveCurrentDate + saveCurrentTime;
+
+        //---------------Post Date and Time------------------------------------
+
         final String timestamp = String.valueOf(System.currentTimeMillis());
+        String filePathAndName = "" + timestamp;
 
-        String filePathAndName = "Posts/" + "post_" + timestamp;
-
-        if(!uri.equals("noImage")){ //post with image
-            StorageReference ref = FirebaseStorage.getInstance().getReference().child(filePathAndName);
-            ref.putFile(Uri.parse(uri)).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+        if(imageUri != null){
+            String imgString = imageUri.getLastPathSegment();
+            StorageReference filePath = PostItemStorageRef.child("Posts").child(imgString + postDateAndTime + ".jpg");
+            filePath.putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                 @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    //image is uploaded to firebase storage, now get its url
-                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                    while(!uriTask.isSuccessful());
-
-                    String downloadUri = uriTask.getResult().toString();
-
-                    if(uriTask.isSuccessful()){
-                        HashMap<Object,String> hashMap = new HashMap<>();
-                        hashMap.put("uid", uid);
-                        hashMap.put("uName", name);
-                        hashMap.put("uEmail", email);
-                        hashMap.put("uDp", dp);
-                        hashMap.put("pId", timestamp);
-                        hashMap.put("pTitle", title);
-                        hashMap.put("pDescr", description);
-                        hashMap.put("pImage", downloadUri);
-                        hashMap.put("pTime", timestamp);
-
-                        //path to store data
-                        DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-                        //put data in ref
-                        ref.child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                pd.dismiss();
-                                Toast.makeText(getActivity(), "Post published successfully!", Toast.LENGTH_SHORT).show();
-
-                                //reset views
-                                postTitle.setText("");
-                                postDesc.setText("");
-                                postImage.setImageURI(null);
-                                image_uri = null;
-                            }
-                        }).addOnFailureListener(new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                pd.dismiss();
-                                Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        });
-
+                public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                    if(task.isSuccessful()){
+                        downloadUri = task.getResult().getDownloadUrl().toString();
+                        pd.dismiss();
+                        saveToDatabase();
                     }
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    pd.dismiss();
-                    Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
-                }
-            });
-        } else { //post without image
-            HashMap<Object,String> hashMap = new HashMap<>();
-            hashMap.put("uid", uid);
-            hashMap.put("uName", name);
-            hashMap.put("uEmail", email);
-            hashMap.put("uDp", dp);
-            hashMap.put("pId", timestamp);
-            hashMap.put("pTitle", title);
-            hashMap.put("pDescr", description);
-            hashMap.put("pImage", "noImage");
-            hashMap.put("pTime", timestamp);
-
-            //path to store data
-            DatabaseReference ref = FirebaseDatabase.getInstance().getReference("Posts");
-
-            //put data in ref
-            ref.child(timestamp).setValue(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    pd.dismiss();
-                    Toast.makeText(getActivity(), "Post published successfully!", Toast.LENGTH_SHORT).show();
-                    //reset views
-                    postTitle.setText("");
-                    postDesc.setText("");
-                    postImage.setImageURI(null);
-                    image_uri = null;
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    pd.dismiss();
-                    Toast.makeText(getActivity(), "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+                    else {
+                        Toast.makeText(getActivity(), "Could not upload post.", Toast.LENGTH_SHORT).show();
+                    }
                 }
             });
         }
@@ -368,5 +323,45 @@ public class PostItemFragment extends Fragment {
             startActivity(new Intent(getActivity(),MainActivity.class));
             getActivity().finish();
         }
+    }
+
+    private void saveToDatabase(){
+        userDb.child(uid).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    name = dataSnapshot.child("name").getValue().toString();
+                    email = dataSnapshot.child("email").getValue().toString();
+                    //dp = dataSnapshot.child("image").getValue().toString();
+
+                    HashMap postsMap = new HashMap();
+                    postsMap.put("uid", uid);
+                    postsMap.put("uName", name);
+                    postsMap.put("uEmail", email);
+                    postsMap.put("uDp", dp);
+                    postsMap.put("pId", postDateAndTime);
+                    postsMap.put("pTitle", itemName);
+                    postsMap.put("pDescr", itemDescription);
+                    postsMap.put("pImage", downloadUri);
+
+                    postsDb.child(uid).updateChildren(postsMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(getActivity(), "Post uploaded", Toast.LENGTH_SHORT).show();
+                            }
+                            else {
+                                Toast.makeText(getActivity(), "Could not upload post", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //do nothing
+            }
+        });
     }
 }
