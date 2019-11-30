@@ -67,17 +67,33 @@
         android:textColor="@color/primaryDark"
         android:textColorHint="#6F5C72" />
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="248dp"
+            android:layout_height="248dp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="266dp"
+            android:background="#DADADA"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_add_to_photos_black_24dp" />
+    </RelativeLayout>
+
     <ImageView
         android:id="@+id/postItem_image"
         android:layout_width="250dp"
         android:layout_height="250dp"
         android:layout_below="@id/postItem_description"
-        android:layout_centerHorizontal="true"
+        android:layout_centerInParent="true"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginBottom="10dp"
-        android:background="#CACACA"
-        android:scaleType="centerInside"
-        app:srcCompat="@drawable/ic_add_to_photos_black_24dp" />
+        android:contextClickable="false"
+        android:scaleType="centerCrop"/>
 
     <Button
         android:id="@+id/postItem_button"

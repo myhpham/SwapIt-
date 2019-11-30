@@ -41,8 +41,8 @@
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_below="@id/userprofile_divider"
-        android:layout_marginTop="25dp"
-        android:scaleType="fitCenter" />
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp" />
 
 
     <TextView
@@ -133,11 +133,11 @@
     <GridView
         android:id="@+id/userprofile_gridview"
         android:layout_width="match_parent"
-        android:layout_below="@id/userprofile_divider2"
         android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginBottom="50dp"
+        android:layout_below="@id/userprofile_divider2"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="70dp"
         android:paddingLeft="15dp" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

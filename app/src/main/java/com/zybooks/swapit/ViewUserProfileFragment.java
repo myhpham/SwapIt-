@@ -364,55 +364,6 @@ public class ViewUserProfileFragment extends Fragment {
                 }
             });
         }
-
-        //-------------------------------------------------------------
-
-        /*
-        String filePathandName = storagePath + "" + profilePhoto + "_" + user.getUid();
-
-        StorageReference storageReference2 = storageReference.child(filePathandName);
-        storageReference2.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                while(!uriTask.isSuccessful());
-                Uri downloadUri = uriTask.getResult();
-
-                //check if image is uploaded
-                if(uriTask.isSuccessful()){
-
-                    HashMap<String, Object> results = new HashMap<>();
-                    results.put(profilePhoto, downloadUri.toString());
-
-                    databaseReference.child(user.getUid()).updateChildren(results).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void aVoid) {
-                            pd.dismiss();
-                            Toast.makeText(getActivity(), "Image Updated!", Toast.LENGTH_SHORT).show();
-
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            pd.dismiss();
-                            Toast.makeText(getActivity(), "Error Updating Image", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-
-                } else{
-                    pd.dismiss();
-                    Toast.makeText(getActivity(), "An error occurred.", Toast.LENGTH_SHORT).show();
-                }
-
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                pd.dismiss();
-                Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_SHORT).show();
-            }
-        });
-         */
     }
 
 
@@ -466,7 +417,7 @@ public class ViewUserProfileFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getActivity(), "Profile photo updated", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
                             }
                             else {
                                 Toast.makeText(getActivity(), "Could not update profile photo", Toast.LENGTH_SHORT).show();

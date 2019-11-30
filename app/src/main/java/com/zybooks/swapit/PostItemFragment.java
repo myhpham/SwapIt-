@@ -93,12 +93,6 @@ public class PostItemFragment extends Fragment {
         postImage = v.findViewById(R.id.postItem_image);
         postButton = v.findViewById(R.id.postItem_button);
 
-        /*
-        getActivity().setActionBar(null);
-        getActivity().getActionBar().setTitle("Add post");
-        getActivity().getActionBar().setDisplayShowHomeEnabled(true);
-        getActivity().getActionBar().setDisplayHomeAsUpEnabled(true);*/
-
         //-----Firebase Storage Reference-----------
         //PostItemStorageRef = FirebaseStorage.getInstance().getReference().child(filePathAndName);
         PostItemStorageRef = FirebaseStorage.getInstance().getReference();
@@ -187,7 +181,7 @@ public class PostItemFragment extends Fragment {
 
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         intent.putExtra(MediaStore.EXTRA_OUTPUT,image_uri);
-        startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);
+        startActivityForResult(intent, IMAGE_PICK_CAMERA_CODE);     //error here
     }
 
     private void storePostInformation() {
