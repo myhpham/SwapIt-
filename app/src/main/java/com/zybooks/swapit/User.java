@@ -11,7 +11,6 @@ public class User {
 
     }
 
-    //HASHMAPS
     public void setName(String name){
         this.fullname = name;
     }
