@@ -31,15 +31,33 @@
                 android:layout_height="30dp"
                 tools:srcCompat="@tools:sample/avatars[11]" />
 
-            <TextView
-                android:id="@+id/singlepost_sellername_textview"
+            <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:hint="@string/sellerprofile_name"
-                android:textColor="#000000"
-                android:textColorHint="#0F0F0F"
-                android:textStyle="bold" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/singlepost_sellername_textview"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:hint="@string/sellerprofile_name"
+                    android:textColor="#000000"
+                    android:textColorHint="#0F0F0F"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/singlepost_time_textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:hint="post time"
+                    android:textColor="#272727"
+                    android:textColorHint="#050505"
+                    android:textSize="10sp" />
+            </LinearLayout>
+
         </LinearLayout>
 
         <ImageView
@@ -67,7 +85,7 @@
                 android:textStyle="bold" />
 
             <ImageButton
-                android:id="@+id/imageButton"
+                android:id="@+id/singlepost_message_button"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:background="#00FFFFFF"
