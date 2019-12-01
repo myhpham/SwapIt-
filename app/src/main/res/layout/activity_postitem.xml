@@ -63,7 +63,7 @@
         android:ems="10"
         android:gravity="top"
         android:hint="@string/positem_description"
-        android:inputType="textImeMultiLine"
+        android:inputType="textMultiLine"
         android:textColor="@color/primaryDark"
         android:textColorHint="#6F5C72" />
 

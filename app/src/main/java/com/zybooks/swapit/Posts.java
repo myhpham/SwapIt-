@@ -16,7 +16,7 @@ public class Posts {
     }
 
     public Posts() {
-
+        //empty constructor
     }
 
     public String getUid() {

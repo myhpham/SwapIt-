@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/single_user_post"
-    android:layout_width="300dp"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="false"
     android:layout_gravity="center_horizontal">
@@ -66,33 +66,40 @@
             android:layout_height="250dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="5dp"
-            android:background="#D54D6875" />
+            android:background="#D54D6875"
+            android:scaleType="centerCrop" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginHorizontal="10dp"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/singlepost_itemname_textview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="170dp"
                 android:hint="Item Name"
                 android:textColor="#050000"
                 android:textColorHint="#000000"
                 android:textStyle="bold" />
 
-            <ImageButton
-                android:id="@+id/singlepost_message_button"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:background="#00FFFFFF"
-                android:baselineAlignBottom="true"
-                android:clickable="true"
-                android:scaleType="center"
-                app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/singlepost_message_button"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_alignWithParentIfMissing="false"
+                    android:layout_alignParentRight="true"
+                    android:background="#00FFFFFF"
+                    android:baselineAlignBottom="false"
+                    android:clickable="true"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_mail_outline_black_24dp" />
+            </RelativeLayout>
 
         </LinearLayout>
 

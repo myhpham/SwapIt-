@@ -318,7 +318,7 @@ public class PostItemFragment extends Fragment {
                 if(dataSnapshot.exists()){
                     name = dataSnapshot.child("name").getValue().toString();
                     email = dataSnapshot.child("email").getValue().toString();
-                    //dp = dataSnapshot.child("image").getValue().toString();
+                    dp = dataSnapshot.child("image").getValue().toString();
 
                     HashMap postsMap = new HashMap();
                     postsMap.put("uid", uid);
@@ -334,10 +334,10 @@ public class PostItemFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getActivity(), "Post uploaded", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Post successfully uploaded", Toast.LENGTH_SHORT).show();
                             }
                             else {
-                                Toast.makeText(getActivity(), "Could not upload post", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getContext(), "Could not upload post", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });

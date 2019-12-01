@@ -226,7 +226,7 @@ public class ViewUserProfileFragment extends Fragment {
 
                 if(!TextUtils.isEmpty(value)){
                     pd.show();
-                    HashMap<String, Object> result = new HashMap<>();
+                    HashMap <String, Object> result = new HashMap();
                     result.put(key, value);
 
                     databaseReference.child(user.getUid()).updateChildren(result).addOnSuccessListener(new OnSuccessListener<Void>() {
