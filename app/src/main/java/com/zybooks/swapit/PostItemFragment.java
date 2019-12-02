@@ -72,7 +72,7 @@ public class PostItemFragment extends Fragment {
     String[] storagePermissions;
 
     //user info
-    private String name, email, uid, dp, mCurrentPhotoPath;
+    private String name, email, uid, dp, mCurrentPhotoPath, zip;
 
     //post info
     private String saveCurrentDate, saveCurrentTime, postDateAndTime, downloadUri;
@@ -115,6 +115,7 @@ public class PostItemFragment extends Fragment {
                     name = "" + ds.child("name").getValue();
                     email = "" + ds.child("email").getValue();
                     dp = "" + ds.child("image").getValue();
+                    zip = "" + ds.child("zip").getValue();
                 }
             }
 
@@ -214,11 +215,11 @@ public class PostItemFragment extends Fragment {
         //---------------Post Date and Time------------------------------------
 
         Calendar date = Calendar.getInstance();
-        SimpleDateFormat currentDate = new SimpleDateFormat("DD-MM-YYYY");
+        SimpleDateFormat currentDate = new SimpleDateFormat("MM-dd-yyyy");
         saveCurrentDate = currentDate.format(date.getTime());
 
         Calendar time = Calendar.getInstance();
-        SimpleDateFormat currentTime = new SimpleDateFormat("HH:MM:SS");
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm:ss a");
         saveCurrentTime = currentTime.format(time.getTime());
 
         //global string variable for date and time
@@ -318,6 +319,7 @@ public class PostItemFragment extends Fragment {
                 if(dataSnapshot.exists()){
                     name = dataSnapshot.child("name").getValue().toString();
                     email = dataSnapshot.child("email").getValue().toString();
+                    zip = dataSnapshot.child("zip").getValue().toString();
                     dp = dataSnapshot.child("image").getValue().toString();
 
                     HashMap postsMap = new HashMap();
@@ -326,6 +328,7 @@ public class PostItemFragment extends Fragment {
                     postsMap.put("uEmail", email);
                     postsMap.put("uDp", dp);
                     postsMap.put("pId", postDateAndTime);
+                    postsMap.put("pZip", zip);
                     postsMap.put("pTitle", itemName);
                     postsMap.put("pDescr", itemDescription);
                     postsMap.put("pImage", downloadUri);

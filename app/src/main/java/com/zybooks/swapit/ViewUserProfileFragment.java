@@ -63,7 +63,7 @@ public class ViewUserProfileFragment extends Fragment {
     }
 
     private static final int CHOOSE_IMAGE = 101;
-    DatabaseReference databaseReference;
+    DatabaseReference databaseReference, postsRef;
     FirebaseDatabase firebaseDatabase;
     FirebaseUser user;
     FirebaseAuth firebaseAuth;
@@ -100,6 +100,7 @@ public class ViewUserProfileFragment extends Fragment {
         user = firebaseAuth.getCurrentUser();
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Users");
+        postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
         storageReference = getInstance().getReference();
         profilePicRef = FirebaseStorage.getInstance().getReference();
 
@@ -413,6 +414,7 @@ public class ViewUserProfileFragment extends Fragment {
                     HashMap result = new HashMap();
                     result.put("image", downloadUri);
 
+                    //updates uDp (users)
                     databaseReference.child(user.getUid()).updateChildren(result).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {

@@ -1,11 +1,18 @@
 package com.zybooks.swapit;
 
+import android.app.Application;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.ColorSpace;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -23,19 +31,29 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
+import java.util.List;
+
+
+
 public class HomePageFragment extends Fragment {
 
+    private final String TAG = "HomePageFragment";
+
     private View postsView;
+    static Context context;
 
     //database objects
     private FirebaseAuth firebaseAuth;
     private DatabaseReference userRef, postRef;
+
 
     //user objects
     private String userid;
 
     //layout objects
     private RecyclerView homepage_recyclerView;
+    //ImageButton messageButton;
 
     //TextView profileName;
 
@@ -45,6 +63,7 @@ public class HomePageFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
+        context = getContext();
         postsView = inflater.inflate(R.layout.activity_homepage, container, false);
 
         //---------recyclerview items---------------------------------------------------
@@ -79,6 +98,7 @@ public class HomePageFragment extends Fragment {
 
     //post to display posts
     private void displayPosts() {
+        //Log.d("TAG", "displayPosts");
 
         FirebaseRecyclerAdapter<Posts, PostsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, PostsViewHolder>
                 (
@@ -95,8 +115,10 @@ public class HomePageFragment extends Fragment {
                 postsViewHolder.setpImage(posts.getpImage());
                 postsViewHolder.setpDescr(posts.getpDescr());
                 postsViewHolder.setpId(posts.getpId());
+                postsViewHolder.setpZip(posts.getpZip());
             }
         };
+
         homepage_recyclerView.setAdapter(firebaseRecyclerAdapter);
     }
 
@@ -104,6 +126,7 @@ public class HomePageFragment extends Fragment {
     public static class PostsViewHolder extends RecyclerView.ViewHolder {
         View view;
 
+        ImageButton messageButton;
         //TextView profileName_textView, postTime_textView, postItemName_textView, postDescr_textView;
         //ImageView profileImageView, postImageView;
 
@@ -111,17 +134,23 @@ public class HomePageFragment extends Fragment {
             super(itemView);
             view = itemView;
 
-            /*
-            profileName_textView = view.findViewById(R.id.singlepost_sellername_textview);
-            postTime_textView = view.findViewById(R.id.singlepost_time_textView);
-            postItemName_textView = view.findViewById(R.id.singlepost_itemname_textview);
+            //Log.d("TAG", "ViewHolder");
 
-            profileImageView = view.findViewById(R.id.singlepost_profilepic_imageview);
-            postImageView = view.findViewById(R.id.singlepost_imageView);
-            */
+            messageButton = view.findViewById(R.id.singlepost_message_button);
+            messageButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(context, chatActivity.class);
+                    intent.putExtra("hisUid", "T2hxGlIYaZYyynxHK5LqhkvY2nj2"); //need to pass seller's uid here
+                    context.startActivity(intent);
+                }
+            });
         }
 
-        //setuid
+        public void setUid(String userId) {
+            //
+        }
 
         public void setuName(String name) {
             TextView profileName_textView = view.findViewById(R.id.singlepost_sellername_textview);
@@ -144,6 +173,11 @@ public class HomePageFragment extends Fragment {
         public void setpTitle(String postTitle) {
             TextView postItemName_textView = view.findViewById(R.id.singlepost_itemname_textview);
             postItemName_textView.setText(postTitle);
+        }
+
+        public void setpZip(String postZip) {
+            TextView postItemZip_textView = view.findViewById(R.id.singlepost_itemzip_textview);
+            postItemZip_textView.setText(", " + postZip);
         }
 
         public void setpImage(String postImg) {

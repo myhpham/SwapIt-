@@ -34,6 +34,7 @@ import com.google.firebase.auth.AuthResult;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class signUpPage extends AppCompatActivity {
 
@@ -43,7 +44,6 @@ public class signUpPage extends AppCompatActivity {
     private FirebaseAuth.AuthStateListener authStateListener;
     private ArrayList<String> arrayList;
     ProgressBar progressBar;
-    DatabaseReference Reference;
 
     @Override
 

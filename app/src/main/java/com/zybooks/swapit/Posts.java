@@ -2,9 +2,9 @@ package com.zybooks.swapit;
 
 public class Posts {
 
-    private String uid, uName, uEmail, uDp, pTitle, pImage, pId, pDescr;
+    private String uid, uName, uEmail, uDp, pTitle, pImage, pId, pDescr, pZip;
 
-    public Posts(String uid, String uName, String uEmail, String uDp, String pTitle, String pImage, String pId, String pDescr) {
+    public Posts(String uid, String uName, String uEmail, String uDp, String pTitle, String pImage, String pId, String pDescr, String pZip) {
         this.uid = uid;
         this.uName = uName;
         this.uEmail = uEmail;
@@ -13,6 +13,7 @@ public class Posts {
         this.pImage = pImage;
         this.pId = pId;
         this.pDescr = pDescr;
+        this.pZip = pZip;
     }
 
     public Posts() {
@@ -81,5 +82,13 @@ public class Posts {
 
     public void setpDescr(String pDescr) {
         this.pDescr = pDescr;
+    }
+
+    public String getpZip() {
+        return pZip;
+    }
+
+    public void setpZip(String pZip) {
+        this.pZip = pZip;
     }
 }

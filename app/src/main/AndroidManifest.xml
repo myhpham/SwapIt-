@@ -30,6 +30,8 @@
         <activity android:name=".homePage"/>
         <activity android:name=".signUpPage" />
         <activity android:name=".userProfile"/>
+        <activity android:name=".chatActivity"/>
+        <activity android:name=".ViewMessages"/>
 
         <meta-data
             android:name="preloaded_fonts"

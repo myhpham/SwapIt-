@@ -24,11 +24,15 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity{
     private Button login, signup;
     private EditText ETusername, ETpassword;
     private FirebaseAuth firebaseAuth;
     ProgressBar progressBar;
+    DatabaseReference dbRef;
+    List<ModelUser> userList;
 
 
     @Override
@@ -44,11 +48,13 @@ public class MainActivity extends AppCompatActivity{
         signup = (Button) findViewById(R.id.main_signupbutton);
         progressBar = (ProgressBar) findViewById(R.id.main_progressbar);
 
+
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final String username = ETusername.getText().toString().trim();
                 final String password = ETpassword.getText().toString().trim();
+
 
                 if(TextUtils.isEmpty(username)){
                     Toast.makeText(MainActivity.this, "Please enter your email.", Toast.LENGTH_LONG).show();
@@ -88,6 +94,7 @@ public class MainActivity extends AppCompatActivity{
                 startActivity(it);
             }
         });
+
     }
 
     // if user is already logged in, goes straight to user profile
