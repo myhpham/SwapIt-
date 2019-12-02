@@ -46,5 +46,7 @@ dependencies {
 
     //recycleradapter dependency
     implementation 'com.firebaseui:firebase-ui-database:2.1.1'
+    //recycleroptions
+    implementation 'com.firebaseui:firebase-ui-database:3.3.1'
 }
 apply plugin: 'com.google.gms.google-services'

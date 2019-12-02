@@ -3,6 +3,7 @@ package com.zybooks.swapit;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,6 +52,8 @@ public class chatActivity extends AppCompatActivity {
 
     String hisUid, myUid, hisImage;
 
+    static final String TAG = "ChatActivity";
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +74,9 @@ public class chatActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         Intent intent = getIntent(); // geting userID, info about who we want to message
-        hisUid = intent.getStringExtra("hisUid"); //ID of the user we want to chat; "hisUid" has to be passed by the Intent coming from message seller btn
+        hisUid = intent.getStringExtra("SELLER_ID"); //ID of the user we want to chat; "SELLER_ID" has to be passed by the Intent coming from message seller btn
+
+        Log.d(TAG, " " + hisUid);
 
         //firebaseauth instance
         firebaseAuth = FirebaseAuth.getInstance();
@@ -178,10 +183,8 @@ public class chatActivity extends AppCompatActivity {
                 for(DataSnapshot ds: dataSnapshot.getChildren()){
                     ModelChat chat = ds.getValue(ModelChat.class);
                     //error here !
-                    if(hisUid != null && myUid != null) {
-                        if (chat.getReceiver().equals(myUid) && chat.getSender().equals(hisUid) || chat.getReceiver().equals(hisUid) && chat.getSender().equals(myUid)) {
-                            chatList.add(chat);
-                        }
+                    if (chat.getReceiver().equals(myUid) && chat.getSender().equals(hisUid) || chat.getReceiver().equals(hisUid) && chat.getSender().equals(myUid)) {
+                        chatList.add(chat);
                     }
 
                     //adapter
@@ -272,7 +275,7 @@ public class chatActivity extends AppCompatActivity {
         String timestamp = String.valueOf(System.currentTimeMillis());
         //set offline w last seen
         checkOnlineStatus(timestamp);
-        userRefForSeen.removeEventListener(seenListener);
+        userRefForSeen.removeEventListener(seenListener);       //ERROR HERE
     }
 
     @Override
@@ -294,8 +297,4 @@ public class chatActivity extends AppCompatActivity {
             finish();
         }
     }
-
-
-
-
 }
