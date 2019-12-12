@@ -1,4 +1,4 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,14 +17,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.zybooks.swapit.Adapters.AdapterChatlist;
+import com.zybooks.swapit.Activities.MainActivity;
+import com.zybooks.swapit.Models.ModelChat;
+import com.zybooks.swapit.Models.ModelChatlist;
+import com.zybooks.swapit.Models.ModelUser;
+import com.zybooks.swapit.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ViewMessagesFragment extends Fragment {
 
-
-    //firebase auth
     FirebaseAuth firebaseAuth;
     RecyclerView recyclerView;
     List<ModelChatlist> chatlistList;

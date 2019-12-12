@@ -1,4 +1,4 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Models;
 
 public class ModelChatlist {
     String id; //we need this to get sender/receiver uid

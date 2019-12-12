@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/userprofile_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_centerHorizontal="false"
+    android:layout_gravity="center_horizontal"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:id="@+id/userprofile_post_linearlayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/userprofile_post_imageview"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="#D54D6875"
+            android:scaleType="centerCrop" />
+
+        <LinearLayout
+            android:id="@+id/userprofile_post_linearlayout2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/userprofile_post_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:hint="Item Name"
+                android:textColor="#050000"
+                android:textColorHint="#000000"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/userprofile_post_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="10dp"
+                android:layout_marginTop="5dp"
+                android:hint="Item Description"
+                android:inputType="textMultiLine"
+                android:textColor="#3F3F3F"
+                android:textColorHint="#F8000000" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/delete_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/userprofile_post_linearlayout"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="#00FFFFFF"
+        android:baselineAlignBottom="false"
+        android:clickable="true"
+        app:srcCompat="@drawable/ic_delete_black_24dp" />
+
+</RelativeLayout>

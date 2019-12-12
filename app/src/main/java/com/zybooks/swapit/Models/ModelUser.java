@@ -1,4 +1,4 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Models;
 
 import android.graphics.ColorSpace;
 

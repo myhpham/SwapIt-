@@ -1,4 +1,4 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Adapters;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -8,6 +8,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.zybooks.swapit.Fragments.HomePageFragment;
+import com.zybooks.swapit.Fragments.PostItemFragment;
+import com.zybooks.swapit.Fragments.ViewMessagesFragment;
+import com.zybooks.swapit.Fragments.ViewUserProfileFragment;
+import com.zybooks.swapit.R;
 
 public class BottomNavBarActivity extends AppCompatActivity {
 

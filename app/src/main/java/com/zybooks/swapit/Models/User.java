@@ -1,14 +1,15 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Models;
 
 public class User {
     private String fullname, email, password, zipcode, profilepic;
+
+    public User(){}
 
     public User(String name, String email, String password, String zipcode){
         this.fullname = name;
         this.email = email;
         this.password = password;
         this.zipcode = zipcode;
-
     }
 
     public void setName(String name){
@@ -41,6 +42,4 @@ public class User {
     public String getProfilepic(){
         return this.profilepic;
     }
-
-
 }

@@ -1,11 +1,8 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -14,7 +11,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.text.format.DateFormat;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +24,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+import com.zybooks.swapit.Adapters.AdapterChat;
+import com.zybooks.swapit.Models.ModelChat;
+import com.zybooks.swapit.R;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -40,6 +40,7 @@ public class chatActivity extends AppCompatActivity {
     TextView nameTV, statusTV;
     EditText messageET;
     ImageButton sendBtn;
+    ImageView profilePic;
 
     FirebaseAuth firebaseAuth;
     FirebaseDatabase firebaseDatabase;
@@ -76,8 +77,6 @@ public class chatActivity extends AppCompatActivity {
         Intent intent = getIntent(); // geting userID, info about who we want to message
         hisUid = intent.getStringExtra("SELLER_ID"); //ID of the user we want to chat; "SELLER_ID" has to be passed by the Intent coming from message seller btn
 
-        Log.d(TAG, " " + hisUid);
-
         //firebaseauth instance
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -97,18 +96,16 @@ public class chatActivity extends AppCompatActivity {
                     //String image = "" + ds.child("image").getValue();
                     //set data
                     nameTV.setText(name);
-                    statusTV.setText(onlineStat);
-
+                    //statusTV.setText(onlineStat);
 
 
                     if(onlineStat.equals("online")){
                         statusTV.setText(onlineStat);
                     } else{ //display last seen time stamp
-                        /*
                         Calendar cal = Calendar.getInstance(Locale.ENGLISH);
                         cal.setTimeInMillis(Long.parseLong(onlineStat));
-                        String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa",cal).toString();
-                        statusTV.setText("Last seen: " + dateTime);*/
+                        String dateTime = DateFormat.format("MM/dd/yyyy hh:mm aa",cal).toString();
+                        statusTV.setText("Last seen: " + dateTime);
                     }
 
                 }
@@ -212,7 +209,9 @@ public class chatActivity extends AppCompatActivity {
         DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference();
 
         String timestamp = String.valueOf(System.currentTimeMillis());
-
+        ModelChat modelChat = new ModelChat();
+        modelChat.setSender(myUid);
+        modelChat.setReceiver(hisUid);
         HashMap<String, Object> hashMap = new HashMap<>();
         hashMap.put("sender", myUid); //sender's uid
         hashMap.put("receiver", hisUid); //receiver's uid

@@ -1,10 +1,10 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Models;
 
 public class Posts {
 
-    private String uid, uName, uEmail, uDp, pTitle, pImage, pId, pDescr, pZip;
+    private String uid, uName, uEmail, uDp, pTitle, pImage, pId, pDescr, pZip, pValue;
 
-    public Posts(String uid, String uName, String uEmail, String uDp, String pTitle, String pImage, String pId, String pDescr, String pZip) {
+    public Posts(String uid, String uName, String uEmail, String uDp, String pTitle, String pImage, String pId, String pDescr, String pZip, String pValue) {
         this.uid = uid;
         this.uName = uName;
         this.uEmail = uEmail;
@@ -14,6 +14,7 @@ public class Posts {
         this.pId = pId;
         this.pDescr = pDescr;
         this.pZip = pZip;
+        this.pValue = pValue;
     }
 
     public Posts() {
@@ -90,5 +91,13 @@ public class Posts {
 
     public void setpZip(String pZip) {
         this.pZip = pZip;
+    }
+
+    public String getpValue() {
+        return pValue;
+    }
+
+    public void setpValue(String pValue) {
+        this.pValue = pValue;
     }
 }

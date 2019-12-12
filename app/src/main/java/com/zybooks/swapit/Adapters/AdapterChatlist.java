@@ -1,11 +1,10 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Adapters;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
+import com.zybooks.swapit.Models.ModelUser;
+import com.zybooks.swapit.R;
+import com.zybooks.swapit.Activities.chatActivity;
 
 import java.util.HashMap;
 import java.util.List;
@@ -55,7 +57,7 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
             holder.lastmessageTV.setText(lastMessage);
         }
         try{
-            Picasso.get().load(userImage).placeholder(R.drawable.ic_person_outline_black_24dp).into(holder.profileIV);
+            Picasso.get().load(userImage).into(holder.profileIV);
         } catch (Exception e){
             Picasso.get().load(R.drawable.ic_person_outline_black_24dp).into(holder.profileIV);
         }
@@ -66,7 +68,7 @@ public class AdapterChatlist extends RecyclerView.Adapter<AdapterChatlist.MyHold
             public void onClick(View v) {
                 //start chat activity with that user
                 Intent intent = new Intent(context, chatActivity.class);
-                intent.putExtra("hisUid", hisUid);
+                intent.putExtra("SELLER_ID", hisUid);
                 context.startActivity(intent);
 
             }

@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.zybooks.swapit.HomePageFragment"
+        android:name="com.zybooks.swapit.Fragments.HomePageFragment"
         android:label="@string/title_home"
         tools:layout="@layout/activity_homepage" />
 
     <fragment
         android:id="@+id/navigation_addpost"
-        android:name="com.zybooks.swapit.PostItemFragment"
+        android:name="com.zybooks.swapit.Fragments.PostItemFragment"
         android:label="@string/title_post"
         tools:layout="@layout/activity_postitem" />
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.zybooks.swapit.ViewUserProfileFragment"
+        android:name="com.zybooks.swapit.Fragments.ViewUserProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/activity_viewuserprofile" />
 
     <fragment
         android:id="@+id/navigation_messages"
-        android:name="com.zybooks.swapit.ViewMessagesFragment"
+        android:name="com.zybooks.swapit.Fragments.ViewMessagesFragment"
         android:label="@string/title_messages"
         tools:layout="@layout/activity_openmessages" />
 </navigation>

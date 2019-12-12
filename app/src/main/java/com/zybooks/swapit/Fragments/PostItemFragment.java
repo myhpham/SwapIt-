@@ -1,4 +1,4 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Fragments;
 
 import android.Manifest;
 import android.app.ActionBar;
@@ -9,14 +9,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.icu.text.SimpleDateFormat;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +38,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.zybooks.swapit.Activities.MainActivity;
+import com.zybooks.swapit.R;
 
 import java.util.Calendar;
 import java.util.HashMap;
@@ -57,7 +55,6 @@ public class PostItemFragment extends Fragment {
     private FirebaseAuth firebaseAuth;
     private DatabaseReference userDb, postsDb;
     private StorageReference PostItemStorageRef;
-    ActionBar actionBar;
 
     //permissions constants
     private static final int CAMERA_REQUEST_CODE =100;
@@ -77,6 +74,7 @@ public class PostItemFragment extends Fragment {
     //post info
     private String saveCurrentDate, saveCurrentTime, postDateAndTime, downloadUri;
     private String itemName, itemDescription;
+    private String pValue;
 
     Uri image_uri = null;
     ProgressDialog pd;
@@ -207,7 +205,6 @@ public class PostItemFragment extends Fragment {
     }
 
     private void uploadData(final String title, final String description, Uri imageUri) {
-        Log.d(TAG, "Attempting to publish post...");
 
         pd.setMessage("Publishing post...");
         pd.show();
@@ -279,13 +276,6 @@ public class PostItemFragment extends Fragment {
             }
         }
     }
-
-    /*
-    public boolean onSupportNavigateUp(){
-        getActivity().onBackPressed();
-        return super.onSupportNavigateUp;
-    }*/
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -307,7 +297,7 @@ public class PostItemFragment extends Fragment {
             email = user.getEmail();
             uid = user.getUid();
         } else{
-            startActivity(new Intent(getActivity(),MainActivity.class));
+            startActivity(new Intent(getActivity(), MainActivity.class));
             getActivity().finish();
         }
     }
@@ -322,6 +312,8 @@ public class PostItemFragment extends Fragment {
                     zip = dataSnapshot.child("zip").getValue().toString();
                     dp = dataSnapshot.child("image").getValue().toString();
 
+                    pValue = uid + " " + itemName + " " + postDateAndTime;
+
                     HashMap postsMap = new HashMap();
                     postsMap.put("uid", uid);
                     postsMap.put("uName", name);
@@ -332,15 +324,16 @@ public class PostItemFragment extends Fragment {
                     postsMap.put("pTitle", itemName);
                     postsMap.put("pDescr", itemDescription);
                     postsMap.put("pImage", downloadUri);
+                    postsMap.put("pValue", pValue);
 
-                    postsDb.child(uid+ " " + itemName + " " + postDateAndTime).updateChildren(postsMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    postsDb.child(pValue).updateChildren(postsMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getContext(), "Post successfully uploaded", Toast.LENGTH_SHORT).show();
+                                //getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new HomePageFragment()).commit();
                             }
                             else {
-                                Toast.makeText(getContext(), "Could not upload post", Toast.LENGTH_SHORT).show();
+                                //
                             }
                         }
                     });

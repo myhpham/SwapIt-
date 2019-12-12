@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="#281a41"
     android:gravity="center_horizontal"
-    tools:context=".MainActivity">
+    tools:context=".Activities.MainActivity">
 
     <ImageView
         android:id="@+id/main_logo"
@@ -14,7 +14,7 @@
         android:layout_height="500dp"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/logo" />
+        app:srcCompat="@drawable/mainlogo" />
 
     <EditText
         android:id="@+id/main_username"

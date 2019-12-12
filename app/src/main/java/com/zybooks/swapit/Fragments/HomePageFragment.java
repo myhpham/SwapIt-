@@ -1,22 +1,22 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Fragments;
 
-import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.ColorSpace;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,12 +29,18 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
+import com.zybooks.swapit.Models.Posts;
+import com.zybooks.swapit.R;
+import com.zybooks.swapit.Activities.ViewSellerProfile;
+import com.zybooks.swapit.Activities.chatActivity;
 
-import java.util.ArrayList;
-import java.util.List;
-
+import java.io.File;
+import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 
 public class HomePageFragment extends Fragment {
@@ -46,17 +52,15 @@ public class HomePageFragment extends Fragment {
 
     //database objects
     private FirebaseAuth firebaseAuth;
+    private FirebaseUser user;
     private DatabaseReference userRef, postRef;
 
 
     //user objects
-    private String userid;
+    String userZip;
 
     //layout objects
     private RecyclerView homepage_recyclerView;
-    //ImageButton messageButton;
-
-    //TextView profileName;
 
     public HomePageFragment () {
         //empty container
@@ -70,9 +74,8 @@ public class HomePageFragment extends Fragment {
         //---------recyclerview items---------------------------------------------------
         homepage_recyclerView = postsView.findViewById(R.id.homepage_recyclerview);
         //homepage_recyclerView.setHasFixedSize(true);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
-        linearLayoutManager.setReverseLayout(false);
-        linearLayoutManager.setStackFromEnd(true);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL,false);
+        //linearLayoutManager.setStackFromEnd(true);
         homepage_recyclerView.setLayoutManager(linearLayoutManager);
         //---------recyclerview items---------------------------------------------------
 
@@ -85,131 +88,48 @@ public class HomePageFragment extends Fragment {
 
         //------database reference---------------------------
         firebaseAuth = FirebaseAuth.getInstance();
-        userid = firebaseAuth.getCurrentUser().getUid();
         userRef = FirebaseDatabase.getInstance().getReference().child("Users");
         postRef = FirebaseDatabase.getInstance().getReference().child("Posts");
+        user = firebaseAuth.getCurrentUser();
         //------database reference---------------------------
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        displayPosts();
+        getUserZip();
+        //displayPosts();
     }
 
-    /*
-    //post to display posts
-    private void displayPosts() {
-        //Log.d("TAG", "displayPosts");
+    private void getUserZip() {
+        String userid = user.getUid();
 
-        FirebaseRecyclerAdapter<Posts, PostsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, PostsViewHolder>
-                (
-                        Posts.class,
-                        R.layout.single_post_view,
-                        PostsViewHolder.class,
-                        postRef
-                ) {
+        userRef.child(userid).addValueEventListener(new ValueEventListener() {
             @Override
-            protected void populateViewHolder(PostsViewHolder postsViewHolder, Posts posts, int i) {
-                posts.setUid(posts.getpId());
-                postsViewHolder.setuName(posts.getuName());
-                postsViewHolder.setuDp(posts.getuDp());
-                postsViewHolder.setpTitle(posts.getpTitle());
-                postsViewHolder.setpImage(posts.getpImage());
-                postsViewHolder.setpDescr(posts.getpDescr());
-                postsViewHolder.setpId(posts.getpId());
-                postsViewHolder.setpZip(posts.getpZip());
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()) {
+                    userZip = dataSnapshot.child("zip").getValue().toString();
+                    displayPosts(userZip);
+                }
             }
-        };
-        homepage_recyclerView.setAdapter(firebaseRecyclerAdapter);
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //
+            }
+        });
     }
 
-    //class for RecyclerAdapter
-    public static class PostsViewHolder extends RecyclerView.ViewHolder {
-        View view;
+    private void displayPosts(String zip) {
+        Calendar date = Calendar.getInstance();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("MM-dd");
+        String currentDate = dateFormat.format(date.getTime());
 
-        ImageButton messageButton;
+        //set query to filter posts by zip code
+        Query query = postRef.orderByChild("pZip").equalTo(zip);
 
-        public PostsViewHolder(@NonNull final View itemView) {
-            super(itemView);
-            view = itemView;
-
-            messageButton = view.findViewById(R.id.singlepost_message_button);
-            messageButton.setOnClickListener(this);
-        }
-
-        @Override
-        public void onClick(View v) {
-            int pos = getAdapterPosition();
-            sendData(pos);
-        }
-
-        private void sendData(int pos) {
-            //Posts posts = new Posts();
-            String sellerid = getRef(pos).getKey();
-            Intent intent = new Intent(context, chatActivity.class);
-            intent.putExtra("hisUid", ); //need to pass seller's uid here
-            context.startActivity(intent);
-        }
-
-        public void setUid(String userId) {
-            //
-        }
-
-        public void setuName(String name) {
-            TextView profileName_textView = view.findViewById(R.id.singlepost_sellername_textview);
-            profileName_textView.setText(name);
-        }
-
-        //setuEmail
-
-        public void setuDp(String profileImg) {
-            ImageView profileImageView = view.findViewById(R.id.singlepost_profilepic_imageview);
-
-            try{
-                Picasso.get().load(profileImg).into(profileImageView);
-            } catch (Exception e){
-                Picasso.get().load(R.drawable.ic_profilebutton).into(profileImageView);
-            }
-            //Picasso.get().load(profileImg).into(profileImageView);
-        }
-
-        public void setpTitle(String postTitle) {
-            TextView postItemName_textView = view.findViewById(R.id.singlepost_itemname_textview);
-            postItemName_textView.setText(postTitle);
-        }
-
-        public void setpZip(String postZip) {
-            TextView postItemZip_textView = view.findViewById(R.id.singlepost_itemzip_textview);
-            postItemZip_textView.setText(", " + postZip);
-        }
-
-        public void setpImage(String postImg) {
-            ImageView postImageView = view.findViewById(R.id.singlepost_imageView);
-            try{
-                Picasso.get().load(postImg).into(postImageView);
-            } catch (Exception e){
-                Picasso.get().load(R.drawable.ic_profilebutton).into(postImageView);
-            }
-        }
-
-        public void setpDescr (String postDescr) {
-            TextView postDescription_textView = view.findViewById(R.id.singlepost_description_textview);
-            postDescription_textView.setText(postDescr);
-        }
-
-        public void setpId(String dateAndTime) {
-            TextView postTime_textView = view.findViewById(R.id.singlepost_time_textView);
-            postTime_textView.setText("On " + dateAndTime);
-        }
-    }
-
-     */
-
-    //new adapter!
-    private void displayPosts() {
         FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
-                .setQuery(postRef, Posts.class)
+                .setQuery(query, Posts.class)
                 .build();
 
         FirebaseRecyclerAdapter<Posts, PostsViewHolder> firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, PostsViewHolder>(options) {
@@ -222,13 +142,14 @@ public class HomePageFragment extends Fragment {
             }
 
             @Override
-            protected void onBindViewHolder(@NonNull PostsViewHolder postsViewHolder, final int position, @NonNull final Posts posts) {
+            protected void onBindViewHolder(@NonNull final PostsViewHolder postsViewHolder, final int position, @NonNull final Posts posts) {
                 postsViewHolder.profileName_textView.setText(posts.getuName());
                 postsViewHolder.postItemName_textView.setText(posts.getpTitle());
                 postsViewHolder.postItemZip_textView.setText(posts.getpZip());
                 postsViewHolder.postDescription_textView.setText(posts.getpDescr());
                 postsViewHolder.postTime_textView.setText(posts.getpId());
                 posts.setUid(posts.getUid());
+
 
                 //profile pic
                 try{
@@ -248,7 +169,6 @@ public class HomePageFragment extends Fragment {
                 postsViewHolder.messageButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String sellerid = getRef(position).getKey();
                         String seller = posts.getUid();
 
                         Intent intent = new Intent(context, chatActivity.class);
@@ -256,10 +176,68 @@ public class HomePageFragment extends Fragment {
                         startActivity(intent);
                     }
                 });
+
+                //seller profile button
+                postsViewHolder.profileName_textView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String seller = posts.getUid();
+
+                        Intent intent = new Intent(context, ViewSellerProfile.class);
+                        intent.putExtra("SELLER_ID", seller);
+                        startActivity(intent);
+                    }
+                });
+
+                //share post button
+                postsViewHolder.shareButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        BitmapDrawable bitmapDrawable = (BitmapDrawable)postsViewHolder.postImageView.getDrawable();
+                        Bitmap bitmap = bitmapDrawable.getBitmap();
+                        sharePost(posts.getpTitle(), posts.getpDescr(), bitmap);
+                    }
+                });
+
             }
         };
         homepage_recyclerView.setAdapter(firebaseRecyclerAdapter);
         firebaseRecyclerAdapter.startListening();
+    }
+
+    private void sharePost(String getpTitle, String getpDescr, Bitmap bitmap) {
+        //concatenate
+        String shareBody = "Check out this " + "\"" + getpTitle + "\"" + " out on the SwapIt app!";
+
+
+        //save this image in cache, get the saved image uri
+        Uri uri = saveImageToShare(bitmap);
+
+        //share intent
+        Intent i = new Intent(Intent.ACTION_SEND);
+        i.putExtra(Intent.EXTRA_STREAM, uri);
+        i.putExtra(Intent.EXTRA_TEXT, shareBody);
+        i.putExtra(Intent.EXTRA_SUBJECT, "Subject Here");
+        i.setType("image/png");
+        context.startActivity(Intent.createChooser(i, "Share Via"));
+    }
+
+    private Uri saveImageToShare(Bitmap bitmap) {
+        File imageFolder = new File(context.getCacheDir(), "images");
+        Uri uri = null;
+        try{
+            imageFolder.mkdirs(); // create if not exists
+            File file = new File(imageFolder, "shared_image.png");
+
+            FileOutputStream stream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, stream);
+            stream.flush();
+            stream.close();
+            uri = FileProvider.getUriForFile(context, "com.zybooks.swapit.fileprovider", file);
+        } catch (Exception e) {
+            Toast.makeText(context, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+        return uri;
     }
 
     public static class PostsViewHolder extends RecyclerView.ViewHolder {
@@ -267,7 +245,7 @@ public class HomePageFragment extends Fragment {
 
         TextView profileName_textView, postItemName_textView, postItemZip_textView, postDescription_textView, postTime_textView;
         ImageView profileImageView, postImageView;
-        ImageButton messageButton;
+        ImageButton messageButton, shareButton;
 
         public PostsViewHolder(@NonNull final View itemView) {
             super(itemView);
@@ -283,6 +261,7 @@ public class HomePageFragment extends Fragment {
             profileImageView = view.findViewById(R.id.singlepost_profilepic_imageview);
 
             messageButton = view.findViewById(R.id.singlepost_message_button);
+            shareButton = view.findViewById(R.id.singlepost_share_button);
         }
     }
 }

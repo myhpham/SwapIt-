@@ -2,14 +2,14 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/single_user_post"
+    android:id="@+id/user_postview"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_centerHorizontal="false"
     android:layout_gravity="center_horizontal">
 
     <LinearLayout
-        android:id="@+id/singlepost_linearlayout_vertical"
+        android:id="@+id/user_post_linearlayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFFFFF"
@@ -29,6 +29,7 @@
                 android:id="@+id/singlepost_profilepic_imageview"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
                 android:scaleType="centerCrop"
                 tools:srcCompat="@tools:sample/avatars[11]" />
 
@@ -49,13 +50,13 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/singlepost_time_textView"
+                    android:id="@+id/singlepost_itemzip_textview"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="5dp"
-                    android:hint="post time"
-                    android:textColor="#272727"
-                    android:textColorHint="#050505"
+                    android:hint="Zip code"
+                    android:textColor="#050000"
+                    android:textColorHint="#000000"
                     android:textSize="10sp" />
             </LinearLayout>
 
@@ -63,8 +64,8 @@
 
         <ImageView
             android:id="@+id/singlepost_imageView"
-            android:layout_width="250dp"
-            android:layout_height="250dp"
+            android:layout_width="350dp"
+            android:layout_height="350dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginBottom="5dp"
             android:background="#D54D6875"
@@ -74,6 +75,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal">
 
             <TextView
@@ -85,18 +87,21 @@
                 android:textColorHint="#000000"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/singlepost_itemzip_textview"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:hint="Zip code"
-                android:textColor="#050000"
-                android:textColorHint="#000000" />
-
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <ImageButton
+                    android:id="@+id/singlepost_share_button"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_toLeftOf="@id/singlepost_message_button"
+                    android:layout_alignWithParentIfMissing="false"
+                    android:background="#00FFFFFF"
+                    android:baselineAlignBottom="false"
+                    android:clickable="true"
+                    android:scaleType="center"
+                    app:srcCompat="@drawable/ic_share_black_24dp" />
 
                 <ImageButton
                     android:id="@+id/singlepost_message_button"
@@ -123,6 +128,18 @@
             android:inputType="textMultiLine"
             android:textColor="#3F3F3F"
             android:textColorHint="#F8000000" />
+
+        <TextView
+            android:id="@+id/singlepost_time_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="20dp"
+            android:hint="post time"
+            android:textColor="#272727"
+            android:textColorHint="#050505"
+            android:textSize="10sp" />
 
     </LinearLayout>
 </RelativeLayout>

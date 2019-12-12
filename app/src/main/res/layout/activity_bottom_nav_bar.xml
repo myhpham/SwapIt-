@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:backgroundTint="#00FFFFFF"
-    tools:context=".BottomNavBarActivity">
+    tools:context=".Adapters.BottomNavBarActivity">
 
     <FrameLayout
         android:id="@+id/fragment_container"
@@ -19,7 +19,7 @@
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/nav_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="50dp"
         android:layout_alignParentBottom="true"
         android:backgroundTint="#FFFFFF"
         android:backgroundTintMode="add"

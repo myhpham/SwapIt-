@@ -1,4 +1,4 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Fragments;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -6,9 +6,7 @@ import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -18,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -26,11 +25,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -38,7 +39,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -49,18 +49,16 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
+import com.zybooks.swapit.Activities.MainActivity;
+import com.zybooks.swapit.Models.Posts;
+import com.zybooks.swapit.R;
 
-import java.io.IOException;
 import java.util.HashMap;
 
 import static android.app.Activity.RESULT_OK;
 import static com.google.firebase.storage.FirebaseStorage.getInstance;
 
 public class ViewUserProfileFragment extends Fragment {
-
-    public ViewUserProfileFragment() {
-
-    }
 
     private static final int CHOOSE_IMAGE = 101;
     DatabaseReference databaseReference, postsRef;
@@ -75,6 +73,7 @@ public class ViewUserProfileFragment extends Fragment {
     private ImageView profilePicture;
     private TextView TVname, TVemail, TVzip;
     private Button logoutbutton;
+    private RecyclerView userprofile_recyclerview;
 
     FloatingActionButton fab;
     ProgressBar progressBar;
@@ -92,31 +91,50 @@ public class ViewUserProfileFragment extends Fragment {
     Uri image_uri;
     String profilePhoto, downloadUri;
 
+    String value, uid, pValue, pName;
+
+    HashMap postMap;
+
+    public ViewUserProfileFragment() {
+
+    }
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.activity_viewuserprofile, container, false);
-
-        firebaseAuth = FirebaseAuth.getInstance();
-        user = firebaseAuth.getCurrentUser();
-        firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("Users");
-        postsRef = FirebaseDatabase.getInstance().getReference().child("Posts");
-        storageReference = getInstance().getReference();
-        profilePicRef = FirebaseStorage.getInstance().getReference();
-
-        cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
         TVname = v.findViewById(R.id.userprofile_name);
         TVemail = v.findViewById(R.id.userprofile_email);
         TVzip = v.findViewById(R.id.userprofile_zip);
         profilePicture = v.findViewById(R.id.userprofile_image);
+        userprofile_recyclerview = v.findViewById(R.id.userprofile_recyclerview);
 
         fab = v.findViewById(R.id.fab);
         logoutbutton = v.findViewById(R.id.userprofile_logout);
         progressBar = v.findViewById(R.id.profilepicprogressbar);
 
         pd = new ProgressDialog(getActivity());
+
+        return v;
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        firebaseAuth = FirebaseAuth.getInstance();
+        user = firebaseAuth.getCurrentUser();
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference("Users");
+        postsRef = firebaseDatabase.getReference().child("Posts");
+        storageReference = getInstance().getReference();
+        profilePicRef = FirebaseStorage.getInstance().getReference();
+
+        cameraPermissions = new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        storagePermissions = new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE};
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
+        userprofile_recyclerview.setLayoutManager(linearLayoutManager);
 
         Query query = databaseReference.orderByChild("email").equalTo(user.getEmail());
         query.addValueEventListener(new ValueEventListener() {
@@ -164,7 +182,71 @@ public class ViewUserProfileFragment extends Fragment {
             }
         });
 
-        return v;
+        displayUserPosts();
+    }
+
+    private void displayUserPosts() {
+        Query query = postsRef.orderByChild("uid").equalTo(user.getUid());
+
+        FirebaseRecyclerOptions<Posts> options = new FirebaseRecyclerOptions.Builder<Posts>()
+                .setQuery(query, Posts.class)
+                .build();
+
+        FirebaseRecyclerAdapter <Posts, ViewUserProfileFragment.UserPostsViewHolder>firebaseRecyclerAdapter = new FirebaseRecyclerAdapter<Posts, ViewUserProfileFragment.UserPostsViewHolder>(options) {
+            @Override
+            protected void onBindViewHolder(@NonNull final UserPostsViewHolder userPostsViewHolder, int i, @NonNull final Posts posts) {
+                userPostsViewHolder.user_post_name.setText(posts.getpTitle());
+                userPostsViewHolder.user_post_description.setText(posts.getpDescr());
+
+                try{
+                    Picasso.get().load(posts.getpImage()).into(userPostsViewHolder.user_post_image);
+                } catch (Exception e){
+                    //
+                }
+
+                userPostsViewHolder.deletepost.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String postid = posts.getpValue();
+                        deletePost(postid);
+                    }
+                });
+            }
+
+            @NonNull
+            @Override
+            public ViewUserProfileFragment.UserPostsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.userprofile_posts_view, parent, false);
+                ViewUserProfileFragment.UserPostsViewHolder holder = new UserPostsViewHolder(view);
+                return holder;
+            }
+        };
+        userprofile_recyclerview.setAdapter(firebaseRecyclerAdapter);
+        firebaseRecyclerAdapter.startListening();
+    }
+
+    private void deletePost(String postid) {
+        postsRef.child(postid).removeValue();
+    }
+
+    public static class UserPostsViewHolder extends RecyclerView.ViewHolder {
+        View view;
+
+        ImageView user_post_image;
+        TextView user_post_name, user_post_description;
+
+        ImageButton deletepost;
+
+        public UserPostsViewHolder(@NonNull View itemView) {
+            super(itemView);
+            view = itemView;
+
+            user_post_name = view.findViewById(R.id.userprofile_post_name);
+            user_post_description = view.findViewById(R.id.userprofile_post_description);
+            user_post_image = view.findViewById(R.id.userprofile_post_imageview);
+
+            deletepost = view.findViewById(R.id.delete_button);
+        }
     }
 
     private boolean checkStoragePermission(){
@@ -223,7 +305,7 @@ public class ViewUserProfileFragment extends Fragment {
         builder.setPositiveButton("Update", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String value = editText.getText().toString().trim();
+                value = editText.getText().toString().trim();
 
                 if(!TextUtils.isEmpty(value)){
                     pd.show();
@@ -234,6 +316,7 @@ public class ViewUserProfileFragment extends Fragment {
                         @Override
                         public void onSuccess(Void aVoid) {
                             pd.dismiss();
+                            updatePostDatabase(value);
                             Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
 
                         }
@@ -245,9 +328,11 @@ public class ViewUserProfileFragment extends Fragment {
 
                         }
                     });
+
                 } else{
                     Toast.makeText(getActivity(), "Please enter " + key, Toast.LENGTH_SHORT).show();
                 }
+                //updatePostDatabase(value);
             }
         });
 
@@ -259,6 +344,30 @@ public class ViewUserProfileFragment extends Fragment {
             }
         });
         builder.create().show();
+    }
+
+    //trying to update posts
+    private void updatePostDatabase(final String value) {
+        uid = user.getUid();
+
+        Query query = postsRef.orderByChild("uid").equalTo(uid);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    pValue = ds.child("pValue").getValue().toString();
+
+                    postMap = new HashMap();
+                    postMap.put("uName", value);
+                    postsRef.child(pValue).updateChildren(postMap);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //
+            }
+        });
     }
 
     private void showImagePickDialog() {
@@ -308,7 +417,8 @@ public class ViewUserProfileFragment extends Fragment {
                 }
             } break;
             case STORAGE_REQUEST_CODE:{
-                if(grantResults.length > 0){
+                if(grantResults.length > 1){
+                    //Error here!
                     boolean writeStorageAccepted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
 
                     if(writeStorageAccepted){
@@ -345,9 +455,6 @@ public class ViewUserProfileFragment extends Fragment {
     }
 
     private void uploadProfilePicture(Uri uri) {
-
-        //-------------------------------------------------------------
-
         pd.setMessage("Updating profile image...");
         pd.show();
 
@@ -419,7 +526,7 @@ public class ViewUserProfileFragment extends Fragment {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
-                                Toast.makeText(getActivity(), "Successfully updated", Toast.LENGTH_SHORT).show();
+                                profilePhotoToDatabase(downloadUri);
                             }
                             else {
                                 Toast.makeText(getActivity(), "Could not update profile photo", Toast.LENGTH_SHORT).show();
@@ -432,6 +539,29 @@ public class ViewUserProfileFragment extends Fragment {
             @Override
             public void onCancelled(DatabaseError databaseError) {
                 //do nothing
+            }
+        });
+    }
+
+    private void profilePhotoToDatabase(final String downloadUri) {
+        uid = user.getUid();
+
+        Query query = postsRef.orderByChild("uid").equalTo(uid);
+        query.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot ds : dataSnapshot.getChildren()) {
+                    pValue = ds.child("pValue").getValue().toString();
+
+                    postMap = new HashMap();
+                    postMap.put("uDp", downloadUri);
+                    postsRef.child(pValue).updateChildren(postMap);
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                //
             }
         });
     }

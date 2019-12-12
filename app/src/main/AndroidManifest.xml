@@ -7,10 +7,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.CAMERA" />
-    <!--
-    <uses-feature android:name="android.hardware.camera" />
-    -->
 
     <application
         android:allowBackup="true"
@@ -19,19 +15,31 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Design.NoActionBar">
-        <activity android:name=".BottomNavBarActivity"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".Adapters.BottomNavBarActivity"></activity>
+        <activity android:name=".Activities.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".homePage"/>
-        <activity android:name=".signUpPage" />
-        <activity android:name=".userProfile"/>
-        <activity android:name=".chatActivity"/>
-        <activity android:name=".ViewMessages"/>
+        <activity android:name=".Activities.homePage"/>
+        <activity android:name=".Activities.signUpPage" />
+        <activity android:name=".Activities.userProfile"/>
+        <activity android:name=".Activities.chatActivity"/>
+        <activity android:name=".Activities.ViewMessages"/>
+        <activity android:name=".Activities.ViewSellerProfile"/>
+
+        <provider
+            android:authorities="com.zybooks.swapit.fileprovider"
+            android:name="androidx.core.content.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/paths"/>
+        </provider>
 
         <meta-data
             android:name="preloaded_fonts"

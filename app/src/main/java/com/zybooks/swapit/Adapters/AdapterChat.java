@@ -1,7 +1,6 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Adapters;
 
 import android.content.Context;
-import android.graphics.ColorSpace;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,13 +11,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.squareup.picasso.Picasso;
+import com.zybooks.swapit.Models.ModelChat;
+import com.zybooks.swapit.R;
+
 import android.text.format.DateFormat;
 
-import org.w3c.dom.Text;
-
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -62,16 +60,11 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
         //convert time stamp to dd/mm/yyyy hh:mm am/pm
         Calendar calendar = Calendar.getInstance(Locale.ENGLISH);
         calendar.setTimeInMillis(Long.parseLong(timestamp));
-        String dateTime = DateFormat.format("dd/MM/yyyy hh:mm aa",calendar).toString();
+        String dateTime = DateFormat.format("MM/dd/yyyy hh:mm aa",calendar).toString();
 
         //set data
         holder.messageTV.setText(message);
         holder.timeTV.setText(dateTime);
-        try{
-            Picasso.get().load(imageUrl).into(holder.profileIv);
-        } catch (Exception e){
-
-        }
 
         //set seen/delivered of message
         if(position==chatList.size()-1){
@@ -109,7 +102,7 @@ public class AdapterChat extends RecyclerView.Adapter<AdapterChat.MyHolder> {
         public MyHolder(@NonNull View itemView){
             super(itemView);
 
-            profileIv = itemView.findViewById(R.id.rowleft_profileIV);
+            //profileIv = itemView.findViewById(R.id.rowleft_profileIV);
             messageTV = itemView.findViewById(R.id.row_message);
             timeTV = itemView.findViewById(R.id.row_time);
             isSeenTV = itemView.findViewById(R.id.row_isSeenTv);

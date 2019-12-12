@@ -1,8 +1,7 @@
-package com.zybooks.swapit;
+package com.zybooks.swapit.Activities;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -13,28 +12,22 @@ import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.FirebaseError;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.auth.ActionCodeSettings;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.zybooks.swapit.Models.User;
+import com.zybooks.swapit.R;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class signUpPage extends AppCompatActivity {
 
@@ -50,12 +43,6 @@ public class signUpPage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
-        /*
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("Create Account");
-        actionBar.setDisplayHomeAsUpEnabled(true);
-        actionBar.setDefaultDisplayHomeAsUpEnabled(true);*/
 
         firebaseAuth = FirebaseAuth.getInstance();
 
@@ -124,6 +111,7 @@ public class signUpPage extends AppCompatActivity {
                             String userid = user.getUid();
                             String useremail = user.getEmail();
                             String userFullName;
+                            String userPassword;
                             String userzip;
                             String userimg;
 
@@ -131,15 +119,14 @@ public class signUpPage extends AppCompatActivity {
                             hashMap.put("uid",userid);
                             hashMap.put("email",email);
                             hashMap.put("name",fullName);
+                            hashMap.put("onlineStatus", "online");
                             hashMap.put("zip",zip);
-                            hashMap.put("password",password);
+                            hashMap.put("password", password);
                             hashMap.put("image","");
 
                             FirebaseDatabase database = FirebaseDatabase.getInstance();
                             DatabaseReference reference = database.getReference("Users");
                             reference.child(userid).setValue(hashMap);
-
-                            //------------------------
 
                             UserProfileChangeRequest profileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(fullName).build();
                             user.updateProfile(profileChangeRequest);
@@ -172,11 +159,4 @@ public class signUpPage extends AppCompatActivity {
         });
 
     }
-
-    /*
-    @Override
-    public boolean onSupportNavigateUp() {
-        onBackPressed(); //go to previous activity
-        return super.onSupportNavigateUp();
-    }*/
 }

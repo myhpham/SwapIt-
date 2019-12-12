@@ -16,9 +16,10 @@
             android:id="@+id/row_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
             android:text="11/29/2019 03:47PM"
             android:textColor="#777777"
-            android:textSize="12dp" />
+            android:textSize="10sp" />
 
         <TextView
             android:id="@+id/row_message"
@@ -29,7 +30,7 @@
             android:padding="15dp"
             android:text="My message"
             android:textColor="#000000"
-            android:textSize="16dp" />
+            android:textSize="14sp" />
 
 
     </LinearLayout>
